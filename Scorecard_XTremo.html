@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-Tremo · Scorecard de Prospección</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --azul: #1a3a5c;
+  --azul-mid: #2563a8;
+  --azul-light: #dbeafe;
+  --azul-pale: #f0f6ff;
+  --verde: #166534;
+  --verde-light: #dcfce7;
+  --naranja: #c2410c;
+  --naranja-light: #ffedd5;
+  --amarillo: #d97706;
+  --gris-900: #111827;
+  --gris-700: #374151;
+  --gris-500: #6b7280;
+  --gris-300: #d1d5db;
+  --gris-100: #f3f4f6;
+  --gris-50: #f9fafb;
+  --blanco: #ffffff;
+  --radio: 10px;
+  --radio-lg: 16px;
+  --sombra: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  --sombra-md: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #e8edf5;
+  min-height: 100vh;
+  color: var(--gris-900);
+}
+
+/* HEADER */
+.app-header {
+  background: var(--azul);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 58px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.app-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.app-header .logo-mark {
+  width: 32px; height: 32px;
+  background: #d97706;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 14px; color: white;
+}
+.app-header .brand-name {
+  font-size: 15px; font-weight: 600; color: white; letter-spacing: 0.02em;
+}
+.app-header .brand-sub {
+  font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 1px;
+}
+.conn-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: rgba(255,255,255,0.7);
+}
+.conn-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; }
+
+/* NAV TABS */
+.nav-wrap {
+  background: var(--blanco);
+  border-bottom: 1px solid var(--gris-300);
+  padding: 0 24px;
+  display: flex; gap: 4px;
+  overflow-x: auto;
+}
+.nav-wrap::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 14px 18px;
+  font-size: 13px; font-weight: 500;
+  color: var(--gris-500);
+  border: none; background: none; cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-tab:hover { color: var(--azul-mid); }
+.nav-tab.active {
+  color: var(--azul-mid);
+  border-bottom-color: var(--azul-mid);
+}
+.nav-tab .badge-count {
+  background: var(--azul-light);
+  color: var(--azul-mid);
+  font-size: 10px; font-weight: 600;
+  padding: 1px 6px; border-radius: 20px;
+}
+
+/* MAIN CONTENT */
+.main { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* TAB PANELS */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* SECTION CARDS */
+.section-card {
+  background: var(--blanco);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.section-head {
+  padding: 12px 20px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--gris-100);
+}
+.section-head .s-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+}
+.section-head h3 { font-size: 13px; font-weight: 600; color: var(--azul); letter-spacing: 0.04em; text-transform: uppercase; }
+.section-body { padding: 20px; }
+
+/* FORM GRID */
+.fg { display: grid; gap: 14px; }
+.fg-2 { grid-template-columns: 1fr 1fr; }
+.fg-3 { grid-template-columns: 1fr 1fr 1fr; }
+.fg-full { grid-column: 1 / -1; }
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label {
+  font-size: 11px; font-weight: 600;
+  color: var(--gris-500); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.field label .req { color: #ef4444; margin-left: 2px; }
+.field input, .field select, .field textarea {
+  padding: 9px 12px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: var(--radio);
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+  color: var(--gris-900);
+  background: var(--blanco);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--azul-mid);
+  box-shadow: 0 0 0 3px rgba(37,99,168,0.1);
+}
+.field textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+
+/* FOLIO ROW */
+.folio-row {
+  background: var(--azul);
+  border-radius: var(--radio-lg);
+  padding: 16px 20px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 16px; margin-bottom: 16px;
+}
+.folio-field label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px; }
+.folio-field span { font-size: 14px; font-weight: 500; color: white; font-family: 'DM Mono', monospace; }
+.folio-field input {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; padding: 6px 10px;
+  font-size: 13px; color: white; font-family: 'DM Sans', sans-serif; width: 100%;
+}
+.folio-field input::placeholder { color: rgba(255,255,255,0.35); }
+.folio-field input:focus { outline: none; border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.15); }
+
+/* RADIO GROUP */
+.radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+.radio-opt {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: 20px; cursor: pointer;
+  font-size: 13px; color: var(--gris-700);
+  transition: all 0.15s; user-select: none;
+}
+.radio-opt input { display: none; }
+.radio-opt.selected {
+  border-color: var(--azul-mid);
+  background: var(--azul-light);
+  color: var(--azul-mid);
+  font-weight: 500;
+}
+
+/* CHECKBOXES */
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.check-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--gris-300);
+  border-radius: var(--radio); cursor: pointer;
+  font-size: 13px; color: var(--gris-700);
+  transition: all 0.15s; user-select: none;
+}
+.check-opt input { display: none; }
+.check-opt .cb {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid var(--gris-300);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.check-opt.checked .cb { background: var(--azul-mid); border-color: var(--azul-mid); }
+.check-opt.checked .cb::after { content: '✓'; font-size: 10px; color: white; font-weight: 700; }
+.check-opt.checked { border-color: var(--azul-mid); background: var(--azul-pale); color: var(--azul); }
+
+/* NECESIDADES */
+.check-grid-needs .check-opt.checked { border-color: var(--verde); background: var(--verde-light); color: var(--verde); }
+.check-grid-needs .check-opt.checked .cb { background: var(--verde); border-color: var(--verde); }
+
+/* OBJECIONES */
+.check-grid-obj .check-opt.checked { border-color: var(--naranja); background: var(--naranja-light); color: var(--naranja); }
+.check-grid-obj .check-opt.checked .cb { background: var(--naranja); border-color: var(--naranja); }
+
+/* STAR RATING */
+.star-section { display: flex; flex-direction: column; gap: 12px; }
+.star-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--gris-100); }
+.star-row:last-child { border-bottom: none; }
+.star-label { font-size: 13px; color: var(--gris-700); }
+.stars { display: flex; gap: 4px; }
+.star {
+  width: 32px; height: 32px; border-radius: 8px;
+  border: 1.5px solid var(--gris-300);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; transition: all 0.1s;
+  color: var(--gris-300);
+}
+.star.lit { background: #fef3c7; border-color: #f59e0b; color: #f59e0b; }
+
+/* PLAN SELECTOR */
+.plan-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.plan-card {
+  border: 2px solid var(--gris-300); border-radius: var(--radio-lg);
+  padding: 14px; cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.plan-card:hover { border-color: var(--azul-mid); background: var(--azul-pale); }
+.plan-card.selected { border-color: var(--azul-mid); background: var(--azul-light); }
+.plan-card .plan-name { font-size: 13px; font-weight: 600; color: var(--azul); }
+.plan-card .plan-speed { font-size: 20px; font-weight: 600; color: var(--azul-mid); margin: 4px 0; }
+.plan-card .plan-price { font-size: 12px; color: var(--gris-500); }
+.plan-card.selected .plan-name, .plan-card.selected .plan-price { color: var(--azul); }
+
+/* BOTONES */
+.btn-row { display: flex; gap: 10px; margin-top: 8px; }
+.btn {
+  padding: 12px 24px; border-radius: var(--radio);
+  font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; border: none; transition: all 0.15s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-primary { background: var(--azul-mid); color: white; flex: 1; justify-content: center; }
+.btn-primary:hover { background: var(--azul); }
+.btn-primary:disabled { background: var(--gris-300); cursor: not-allowed; }
+.btn-secondary { background: var(--gris-100); color: var(--gris-700); }
+.btn-secondary:hover { background: var(--gris-300); }
+.btn-danger { background: #fee2e2; color: #dc2626; }
+.btn-danger:hover { background: #fecaca; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--gris-900); color: white;
+  padding: 12px 20px; border-radius: var(--radio);
+  font-size: 13px; font-weight: 500;
+  transition: transform 0.3s ease;
+  z-index: 999; display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--verde); }
+.toast.error { background: #dc2626; }
+
+/* DASHBOARD */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.kpi-card {
+  background: var(--blanco); border-radius: var(--radio-lg);
+  padding: 16px; box-shadow: var(--sombra);
+}
+.kpi-card .kpi-val { font-size: 28px; font-weight: 600; color: var(--azul); line-height: 1; }
+.kpi-card .kpi-lbl { font-size: 11px; color: var(--gris-500); margin-top: 4px; font-weight: 500; }
+.kpi-card .kpi-sub { font-size: 11px; color: var(--gris-300); margin-top: 2px; }
+
+.bar-chart { padding: 16px 20px; }
+.bar-row-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 12px; }
+.bar-row-item .bar-name { width: 130px; text-align: right; color: var(--gris-700); flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-row-item .bar-track { flex: 1; height: 10px; background: var(--gris-100); border-radius: 5px; overflow: hidden; }
+.bar-row-item .bar-fill { height: 100%; border-radius: 5px; transition: width 0.5s ease; }
+.bar-row-item .bar-n { width: 24px; text-align: right; color: var(--gris-500); flex-shrink: 0; }
+
+/* LISTA VISITAS */
+.visita-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gris-100);
+  font-size: 13px;
+}
+.visita-item:last-child { border-bottom: none; }
+.visita-left .v-name { font-weight: 600; color: var(--gris-900); }
+.visita-left .v-meta { font-size: 11px; color: var(--gris-500); margin-top: 2px; }
+.v-badge {
+  font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+}
+.v-badge.alta { background: var(--verde-light); color: var(--verde); }
+.v-badge.media { background: #fef3c7; color: #92400e; }
+.v-badge.baja { background: var(--gris-100); color: var(--gris-500); }
+
+/* GUIA y METODOLOGIA */
+.fase-block {
+  border-left: 4px solid;
+  border-radius: 0 var(--radio) var(--radio) 0;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.fase-block.azul { border-color: var(--azul-mid); background: var(--azul-pale); }
+.fase-block.verde { border-color: #16a34a; background: var(--verde-light); }
+.fase-block.naranja { border-color: var(--naranja); background: var(--naranja-light); }
+.fase-block h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.fase-block.azul h4 { color: var(--azul); }
+.fase-block.verde h4 { color: var(--verde); }
+.fase-block.naranja h4 { color: var(--naranja); }
+.fase-block ul { padding-left: 16px; }
+.fase-block ul li { font-size: 13px; color: var(--gris-700); margin-bottom: 5px; line-height: 1.45; }
+
+.guion-box {
+  background: var(--azul-pale);
+  border: 1px solid var(--azul-light);
+  border-radius: var(--radio);
+  padding: 14px 16px;
+  font-size: 13px; font-style: italic;
+  color: var(--azul); line-height: 1.6;
+  margin: 10px 0;
+}
+.guion-box strong { font-style: normal; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 6px; color: var(--gris-500); }
+
+.metric-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.metric-table th { background: var(--azul); color: white; padding: 8px 12px; text-align: left; font-weight: 600; font-size: 11px; }
+.metric-table td { padding: 8px 12px; border-bottom: 1px solid var(--gris-100); color: var(--gris-700); }
+.metric-table tr:last-child td { border-bottom: none; }
+.metric-table tr:nth-child(even) td { background: var(--gris-50); }
+.tag-verde { background: var(--verde-light); color: var(--verde); padding: 2px 8px; border-radius: 10px; font-weight: 600; font-size: 11px; }
+.tag-rojo { background: #fee2e2; color: #dc2626; padding: 2px 8px; border-radius: 10px; font-weight: 600; font-size: 11px; }
+
+.info-box {
+  background: var(--azul-pale);
+  border: 1px solid var(--azul-light);
+  border-left: 4px solid var(--azul-mid);
+  border-radius: 0 var(--radio) var(--radio) 0;
+  padding: 14px 16px;
+  margin: 14px 0;
+}
+.info-box strong { font-size: 13px; color: var(--azul); display: block; margin-bottom: 4px; }
+.info-box p { font-size: 13px; color: var(--gris-700); line-height: 1.5; }
+
+.empty-state {
+  text-align: center; padding: 48px 24px;
+  color: var(--gris-500); font-size: 14px;
+}
+.empty-state .e-icon { font-size: 36px; margin-bottom: 12px; }
+
+@media (max-width: 600px) {
+  .fg-2, .fg-3 { grid-template-columns: 1fr; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .plan-cards { grid-template-columns: 1fr; }
+  .check-grid { grid-template-columns: 1fr; }
+  .folio-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand">
+    <div class="logo-mark">X</div>
+    <div>
+      <div class="brand-name">X-TREMO INTERNET</div>
+      <div class="brand-sub">Scorecard de Prospección B2B</div>
+    </div>
+  </div>
+  <div class="conn-status">
+    <div class="conn-dot" id="conn-dot"></div>
+    <span id="conn-label">Conectado a Sheets</span>
+  </div>
+</header>
+
+<nav class="nav-wrap">
+  <button class="nav-tab active" onclick="showTab('scorecard', this)">📋 Scorecard</button>
+  <button class="nav-tab" onclick="showTab('visitas', this)">📁 Mis visitas <span class="badge-count" id="badge-visitas">0</span></button>
+  <button class="nav-tab" onclick="showTab('dashboard', this)">📊 Dashboard</button>
+  <button class="nav-tab" onclick="showTab('guia', this)">🗺️ Guía operativa</button>
+  <button class="nav-tab" onclick="showTab('metodologia', this)">📈 Metodología</button>
+</nav>
+
+<div class="main">
+
+<!-- ══════════════════════════════════════════════════
+     TAB 1: SCORECARD
+══════════════════════════════════════════════════ -->
+<div id="tab-scorecard" class="tab-panel active">
+
+  <div class="folio-row">
+    <div class="folio-field">
+      <label>Folio</label>
+      <span id="folio-display">VIS-001</span>
+    </div>
+    <div class="folio-field">
+      <label>Fecha</label>
+      <span id="fecha-display"></span>
+    </div>
+    <div class="folio-field">
+      <label>Promotor</label>
+      <input type="text" id="f-promotor" placeholder="Tu nombre">
+    </div>
+    <div class="folio-field">
+      <label>Zona / Colonia <span style="color:#fbbf24">*</span></label>
+      <input type="text" id="f-zona" placeholder="Ej. Centro">
+    </div>
+  </div>
+
+  <!-- A. NEGOCIO -->
+  <div class="section-card">
+    <div class="section-head">
+      <div class="s-icon" style="background:#dbeafe">🏢</div>
+      <h3>A. Datos del negocio</h3>
+    </div>
+    <div class="section-body">
+      <div class="fg fg-2">
+        <div class="field">
+          <label>Nombre del negocio <span class="req">*</span></label>
+          <input type="text" id="f-negocio" placeholder="Razón social o nombre comercial">
+        </div>
+        <div class="field">
+          <label>Calle y número <span class="req">*</span></label>
+          <input type="text" id="f-calle" placeholder="Ej. Av. Insurgentes 540">
+        </div>
+        <div class="field">
+          <label>Giro / Sector <span class="req">*</span></label>
+          <select id="f-giro">
+            <option value="">Seleccionar...</option>
+            <option>Restaurante / Alimentos</option>
+            <option>Consultorio / Clínica</option>
+            <option>Despacho profesional</option>
+            <option>Comercio / Retail</option>
+            <option>Educación / Academia</option>
+            <option>Manufactura / Industria</option>
+            <option>Hotelería / Hospedaje</option>
+            <option>Servicios financieros</option>
+            <option>Logística / Transporte</option>
+            <option>Tecnología</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Empleados estimados</label>
+          <select id="f-empleados">
+            <option value="">Seleccionar...</option>
+            <option>1–5</option><option>6–15</option><option>16–30</option>
+            <option>31–50</option><option>51–100</option><option>100+</option>
+          </select>
+        </div>
+        <div class="field fg-full">
+          <label>¿Tiene sucursales?</label>
+          <div class="radio-group" id="rg-sucursales">
+            <label class="radio-opt"><input type="radio" name="sucursales" value="No"> No</label>
+            <label class="radio-opt"><input type="radio" name="sucursales" value="Sí local (2-3)"> Sí — local (2-3)</label>
+            <label class="radio-opt"><input type="radio" name="sucursales" value="Sí regional (4-10)"> Sí — regional (4-10)</label>
+            <label class="radio-opt"><input type="radio" name="sucursales" value="Sí múltiples (10+)"> Sí — múltiples (10+)</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B. CONTACTO -->
+  <div class="section-card">
+    <div class="section-head">
+      <div class="s-icon" style="background:#dcfce7">👤</div>
+      <h3>B. Contacto</h3>
+    </div>
+    <div class="section-body">
+      <div class="fg fg-2">
+        <div class="field">
+          <label>Nombre del contacto <span class="req">*</span></label>
+          <input type="text" id="f-contacto" placeholder="Nombre completo">
+        </div>
+        <div class="field">
+          <label>Cargo</label>
+          <input type="text" id="f-cargo" placeholder="Ej. Gerente, Dueño, Admin">
+        </div>
+        <div class="field">
+          <label>Teléfono / WhatsApp</label>
+          <input type="tel" id="f-tel" placeholder="+52 81 0000 0000">
+        </div>
+        <div class="field">
+          <label>Correo electrónico</label>
+          <input type="email" id="f-email" placeholder="contacto@empresa.com">
+        </div>
+        <div class="field fg-full">
+          <label>Perfil del contacto <span class="req">*</span></label>
+          <div class="radio-group" id="rg-tomador">
+            <label class="radio-opt"><input type="radio" name="tomador" value="Sí, tomador de decisión"> ✅ Tomador de decisión</label>
+            <label class="radio-opt"><input type="radio" name="tomador" value="Influenciador"> 🔄 Influenciador</label>
+            <label class="radio-opt"><input type="radio" name="tomador" value="No, referidor"> ❌ Sin autoridad</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C. CONECTIVIDAD -->
+  <div class="section-card">
+    <div class="section-head">
+      <div class="s-icon" style="background:#fef3c7">📡</div>
+      <h3>C. Situación actual de conectividad</h3>
+    </div>
+    <div class="section-body">
+      <div class="fg fg-2">
+        <div class="field">
+          <label>Proveedor actual <span class="req">*</span></label>
+          <select id="f-proveedor">
+            <option value="">Seleccionar...</option>
+            <option>Telmex / Infinitum</option>
+            <option>Izzi</option>
+            <option>Megacable</option>
+            <option>Totalplay</option>
+            <option>AT&T</option>
+            <option>Axtel</option>
+            <option>Sin servicio</option>
+            <option>X-Tremo (ya cliente)</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Plan / Velocidad contratada</label>
+          <input type="text" id="f-plan" placeholder="Ej. 100 Mbps / $899/mes">
+        </div>
+        <div class="field">
+          <label>Madurez del contrato</label>
+          <select id="f-contrato">
+            <option value="">Seleccionar...</option>
+            <option>Sin contrato / Mensual</option>
+            <option>Vence en menos de 3 meses</option>
+            <option>Vence en 3–6 meses</option>
+            <option>Vence en 6–12 meses</option>
+            <option>Contrato largo (+12 meses)</option>
+            <option>Desconoce</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Satisfacción con proveedor actual</label>
+          <select id="f-satisfaccion">
+            <option value="">Seleccionar...</option>
+            <option>Muy satisfecho</option>
+            <option>Satisfecho</option>
+            <option>Neutral / Indiferente</option>
+            <option>Insatisfecho</option>
+            <option>Muy insatisfecho</option>
+          </select>
+        </div>
+        <div class="field fg-full">
+          <label>Problemas / Dolor detectado</label>
+          <textarea id="f-hallazgos" placeholder="Ej. Se queja de caídas constantes, lentitud en horario pico, soporte lento..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D. NECESIDADES -->
+  <div class="section-card">
+    <div class="section-head">
+      <div class="s-icon" style="background:#dcfce7">🎯</div>
+      <h3>D. Necesidades detectadas</h3>
+    </div>
+    <div class="section-body">
+      <div class="check-grid check-grid-needs" id="cg-necesidades">
+        <label class="check-opt"><input type="checkbox" value="Mayor velocidad"><span class="cb"></span> Mayor velocidad</label>
+        <label class="check-opt"><input type="checkbox" value="Mayor estabilidad"><span class="cb"></span> Mayor estabilidad</label>
+        <label class="check-opt"><input type="checkbox" value="IP fija"><span class="cb"></span> IP fija</label>
+        <label class="check-opt"><input type="checkbox" value="Mejor soporte"><span class="cb"></span> Mejor soporte técnico</label>
+        <label class="check-opt"><input type="checkbox" value="Cobertura WiFi completa"><span class="cb"></span> Cobertura WiFi completa</label>
+        <label class="check-opt"><input type="checkbox" value="Menor precio"><span class="cb"></span> Menor precio</label>
+        <label class="check-opt"><input type="checkbox" value="Sin contrato forzoso"><span class="cb"></span> Sin contrato forzoso</label>
+        <label class="check-opt"><input type="checkbox" value="Internet simétrico"><span class="cb"></span> Internet simétrico</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- E. OBJECIONES -->
+  <div class="section-card">
+    <div class="section-head">
+      <div class="s-icon" style="background:#ffedd5">⚠️</div>
+      <h3>E. Objeciones presentadas</h3>
+    </div>
+    <div class="section-body">
+      <div class="check-grid check-grid-obj" id="cg-objeciones">
+        <label class="check-opt"><input type="checkbox" value="Contrato vigente"><span class="cb"></span> Contrato vigente</label>
+        <label class="check-opt"><input type="checkbox" value="Sin autoridad para decidir"><span class="cb"></span> Sin autoridad para decidir</label>
+        <label class="check-opt"><input type="checkbox" value="No conoce X-Tremo"><span class="cb"></span> No conoce X-Tremo</label>
+        <label class="check-opt"><input type="checkbox" value="Precio más alto"><span class="cb"></span> Precio más alto</label>
+        <label class="check-opt"><input type="checkbox" value="Satisfecho con actual"><span class="cb"></span> Satisfecho con actual</label>
+        <label class="check-opt"><input type="checkbox" value="No tiene tiempo"><span class="cb"></span> No tiene tiempo ahora</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- F. CALIFICACIÓN -->
+  <div class="section-card">
+    <div class="section-head">
+      <div class="s-icon" style="background:#f3e8ff">⭐</div>
+      <h3>F. Calificación y siguiente paso</h3>
+    </div>
+    <div class="section-body">
+      <div class="star-section">
+        <div class="star-row">
+          <span class="star-label">Nivel de interés del prospecto</span>
+          <div class="stars" id="stars-interes">
+            <div class="star" data-val="1" onclick="setStar('interes',1)">1</div>
+            <div class="star" data-val="2" onclick="setStar('interes',2)">2</div>
+            <div class="star" data-val="3" onclick="setStar('interes',3)">3</div>
+            <div class="star" data-val="4" onclick="setStar('interes',4)">4</div>
+            <div class="star" data-val="5" onclick="setStar('interes',5)">5</div>
+          </div>
+        </div>
+        <div class="star-row">
+          <span class="star-label">Potencial de cierre estimado</span>
+          <div class="stars" id="stars-potencial">
+            <div class="star" data-val="1" onclick="setStar('potencial',1)">1</div>
+            <div class="star" data-val="2" onclick="setStar('potencial',2)">2</div>
+            <div class="star" data-val="3" onclick="setStar('potencial',3)">3</div>
+            <div class="star" data-val="4" onclick="setStar('potencial',4)">4</div>
+            <div class="star" data-val="5" onclick="setStar('potencial',5)">5</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <p style="font-size:12px;font-weight:600;color:var(--gris-500);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Plan recomendado</p>
+        <div class="plan-cards" id="plan-cards">
+          <div class="plan-card" onclick="selectPlan('Essential')">
+            <div class="plan-name">Essential</div>
+            <div class="plan-speed">350 Mbps</div>
+            <div class="plan-price">$849/mes</div>
+          </div>
+          <div class="plan-card" onclick="selectPlan('Smart')">
+            <div class="plan-name">Smart</div>
+            <div class="plan-speed">750 Mbps</div>
+            <div class="plan-price">$1,249/mes</div>
+          </div>
+          <div class="plan-card" onclick="selectPlan('Ultimate')">
+            <div class="plan-name">Ultimate</div>
+            <div class="plan-speed">1,000 Mbps</div>
+            <div class="plan-price">$1,999/mes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fg fg-2" style="margin-top:16px;">
+        <div class="field">
+          <label>Próxima acción <span class="req">*</span></label>
+          <select id="f-accion">
+            <option value="">Seleccionar...</option>
+            <option>Llamada de seguimiento</option>
+            <option>Envío de propuesta</option>
+            <option>Revisita presencial</option>
+            <option>Presentación a tomador de decisión</option>
+            <option>Verificación de cobertura agendada</option>
+            <option>Esperando vencimiento de contrato</option>
+            <option>Sin interés — descartar</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Fecha de seguimiento <span class="req">*</span></label>
+          <input type="date" id="f-seguimiento">
+        </div>
+        <div class="field fg-full">
+          <label>Observaciones adicionales</label>
+          <textarea id="f-observaciones" placeholder="Detalles que ayuden al siguiente contacto..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="limpiarForm()">🔄 Nueva visita</button>
+    <button class="btn btn-primary" id="btn-guardar" onclick="guardarVisita()">
+      💾 Guardar en Sheets
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 2: MIS VISITAS
+══════════════════════════════════════════════════ -->
+<div id="tab-visitas" class="tab-panel">
+  <div class="section-card">
+    <div class="section-head">
+      <div class="s-icon" style="background:#dbeafe">📁</div>
+      <h3>Visitas registradas esta sesión</h3>
+    </div>
+    <div id="lista-visitas">
+      <div class="empty-state">
+        <div class="e-icon">📋</div>
+        <p>Aún no has guardado visitas en esta sesión.</p>
+        <p style="font-size:12px;margin-top:4px;color:var(--gris-300)">Las visitas guardadas en Sheets persisten aunque cierres la app.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 3: DASHBOARD
+══════════════════════════════════════════════════ -->
+<div id="tab-dashboard" class="tab-panel">
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-val" id="kpi-visitas">0</div><div class="kpi-lbl">Visitas registradas</div><div class="kpi-sub">Esta sesión</div></div>
+    <div class="kpi-card"><div class="kpi-val" id="kpi-contactos" style="color:#166534">0</div><div class="kpi-lbl">Contactos efectivos</div><div class="kpi-sub">Con nombre capturado</div></div>
+    <div class="kpi-card"><div class="kpi-val" id="kpi-tomadores" style="color:#1d4ed8">0</div><div class="kpi-lbl">Tomadores de decisión</div><div class="kpi-sub">Identificados</div></div>
+    <div class="kpi-card"><div class="kpi-val" id="kpi-seguimientos" style="color:#d97706">0</div><div class="kpi-lbl">Con seguimiento</div><div class="kpi-sub">Programados</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div class="section-card">
+      <div class="section-head"><div class="s-icon" style="background:#fee2e2">🏢</div><h3>Competidores en zona</h3></div>
+      <div class="bar-chart" id="chart-competidores">
+        <div class="empty-state" style="padding:24px"><p>Registra visitas para ver datos</p></div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="s-icon" style="background:#dcfce7">🎯</div><h3>Necesidades detectadas</h3></div>
+      <div class="bar-chart" id="chart-necesidades">
+        <div class="empty-state" style="padding:24px"><p>Registra visitas para ver datos</p></div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="s-icon" style="background:#ffedd5">⚠️</div><h3>Objeciones frecuentes</h3></div>
+      <div class="bar-chart" id="chart-objeciones">
+        <div class="empty-state" style="padding:24px"><p>Registra visitas para ver datos</p></div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="s-icon" style="background:#f3e8ff">📊</div><h3>Interés promedio</h3></div>
+      <div style="padding:20px;text-align:center">
+        <div style="font-size:56px;font-weight:700;color:var(--azul-mid)" id="kpi-interes">—</div>
+        <div style="font-size:12px;color:var(--gris-500);margin-top:4px">/ 5 puntos promedio</div>
+        <div style="font-size:11px;color:var(--gris-300);margin-top:8px" id="kpi-interes-sub">Sin datos aún</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 4: GUÍA OPERATIVA
+══════════════════════════════════════════════════ -->
+<div id="tab-guia" class="tab-panel">
+  <div class="section-card">
+    <div class="section-head"><div class="s-icon" style="background:#dbeafe">📖</div><h3>Guía operativa del promotor</h3></div>
+    <div class="section-body">
+
+      <div class="fase-block azul">
+        <h4>🔍 Antes de entrar — Observación exterior (30 seg)</h4>
+        <ul>
+          <li>Observa cuántos empleados hay y si hay computadoras, POS, cámaras.</li>
+          <li>Busca stickers o cables del proveedor actual en la fachada.</li>
+          <li>Detecta si tiene más de un piso (oportunidad de instalación personalizada).</li>
+          <li>Evalúa el nivel de actividad — si está muy saturado, espera o regresa.</li>
+        </ul>
+      </div>
+
+      <div class="fase-block naranja">
+        <h4>🚪 Manejo del portero / recepcionista</h4>
+        <div class="guion-box">
+          <strong>Guión recomendado</strong>
+          "Buenos días, vengo de X-Tremo, somos proveedor de internet empresarial en la zona. Quisiera dejar información con la persona que administra los servicios tecnológicos del negocio. ¿Con quién podría hablar?"
+        </div>
+        <ul>
+          <li><strong>Si no está el dueño:</strong> pregunta cuándo regresa y agenda. Deja tarjeta.</li>
+          <li><strong>Si te redirigen:</strong> acepta y califica si puede influir o decidir.</li>
+          <li><strong>Si hay negativa:</strong> anota como "Sin acceso" y planea revisita.</li>
+        </ul>
+      </div>
+
+      <div class="fase-block verde">
+        <h4>💬 Durante la visita — Las 5 preguntas clave (habla 30%, escucha 70%)</h4>
+        <div class="guion-box"><strong>Pregunta 1 — Identificar responsable</strong>"¿Quién es la persona que administra o decide sobre los servicios de internet aquí?"</div>
+        <div class="guion-box"><strong>Pregunta 2 — Situación actual</strong>"¿Con qué proveedor tienen contratado el servicio? ¿Qué velocidad tienen y cómo les ha funcionado?"</div>
+        <div class="guion-box"><strong>Pregunta 3 — Detectar dolor</strong>"¿Han tenido problemas recientemente? Caídas, lentitud, soporte lento..."</div>
+        <div class="guion-box"><strong>Pregunta 4 — Ventana de oportunidad</strong>"¿Saben cuándo vence el contrato con su proveedor actual?"</div>
+        <div class="guion-box"><strong>Pregunta 5 — La pregunta de oro ⭐</strong>"¿Hay zonas dentro del negocio donde no llega bien el WiFi? ¿Tienen más de un piso?" — Esta es nuestra ventaja: instalación personalizada que nadie más ofrece.</div>
+      </div>
+
+      <div class="fase-block azul">
+        <h4>✅ Después de la visita — Registro inmediato (máx 3 min)</h4>
+        <ul>
+          <li>☐ Nombre exacto del negocio y folio asignado.</li>
+          <li>☐ Nombre y cargo del contacto tal como te lo dieron.</li>
+          <li>☐ Proveedor actual y cuándo vence su contrato.</li>
+          <li>☐ Dolor o problema mencionado, aunque fuera casual.</li>
+          <li>☐ Nivel de interés honesto (1-5). No lo infles.</li>
+          <li>☐ Próxima acción con fecha específica. <strong>Sin fecha = sin seguimiento.</strong></li>
+        </ul>
+      </div>
+
+      <div class="info-box">
+        <strong>📞 Contacto directo X-Tremo</strong>
+        <p>WhatsApp Ventas: <strong>(+52) 81 4168-7090</strong><br>
+        Lun-Vie 8:00-20:00 · Sáb-Dom 9:00-14:00 · Soporte 8:00-24:00</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     TAB 5: METODOLOGÍA
+══════════════════════════════════════════════════ -->
+<div id="tab-metodologia" class="tab-panel">
+  <div class="section-card">
+    <div class="section-head"><div class="s-icon" style="background:#dbeafe">📈</div><h3>Metodología de documentación y análisis</h3></div>
+    <div class="section-body">
+
+      <div class="fase-block azul">
+        <h4>Fase 1 — Planificación de zona</h4>
+        <ul>
+          <li>Define bloques de máximo 4-6 manzanas por sesión.</li>
+          <li>Identifica en Google Maps el tipo de corredor antes de ir.</li>
+          <li>Meta diaria: mínimo 15 visitas, óptimo 20+.</li>
+          <li>Revisa seguimientos pendientes antes de planear nuevas visitas.</li>
+        </ul>
+      </div>
+
+      <div class="fase-block verde">
+        <h4>Fase 2 — Documentación estructurada</h4>
+        <ul>
+          <li>Scorecard después de cada visita. Nunca acumules más de 3 sin registrar.</li>
+          <li>Si hay prisa: graba nota de voz 30 seg y transcríbela después.</li>
+          <li>Al cierre del día: completa campos faltantes mientras la memoria está fresca.</li>
+          <li>Registra también negocios cerrados y sin acceso — esa info también vale.</li>
+        </ul>
+      </div>
+
+      <div class="fase-block naranja">
+        <h4>Fase 3 — Análisis semanal (reunión 30-45 min)</h4>
+        <ul>
+          <li>¿Qué giros están respondiendo mejor? Concentra esfuerzo ahí.</li>
+          <li>¿Qué zonas tienen más insatisfacción? = mayor probabilidad de cierre.</li>
+          <li>¿Qué competidor domina y qué quejas genera? Úsalo como argumento.</li>
+          <li>¿Cuántos contratos vencen en 90 días? Son los prospectos calientes.</li>
+        </ul>
+      </div>
+
+      <p style="font-size:13px;font-weight:600;color:var(--gris-700);margin:16px 0 8px;">Métricas de salud operativa</p>
+      <table class="metric-table">
+        <thead>
+          <tr><th>Indicador</th><th>Mínimo</th><th>Óptimo</th><th>Alerta</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Visitas / día</td><td>15</td><td><span class="tag-verde">20+</span></td><td><span class="tag-rojo">&lt;10</span></td></tr>
+          <tr><td>Contacto efectivo</td><td>50%</td><td><span class="tag-verde">65%+</span></td><td><span class="tag-rojo">&lt;40%</span></td></tr>
+          <tr><td>Tomadores / contactos</td><td>30%</td><td><span class="tag-verde">45%+</span></td><td><span class="tag-rojo">&lt;20%</span></td></tr>
+          <tr><td>Oportunidades calificadas</td><td>10%</td><td><span class="tag-verde">20%+</span></td><td><span class="tag-rojo">&lt;5%</span></td></tr>
+          <tr><td>Seguimientos cumplidos</td><td>80%</td><td><span class="tag-verde">95%+</span></td><td><span class="tag-rojo">&lt;70%</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box" style="margin-top:16px">
+        <strong>La idea que resume todo</strong>
+        <p>Con 4 semanas de datos consistentes tendrás suficiente información para identificar el Perfil de Cliente Ideal (ICP) de X-Tremo en tu mercado local. Ese hallazgo vale más que cualquier estrategia genérica.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyhicx0bJDJ5VJagFo2p7CV6k6Z0aWuMw9r3ZcHOo9zEOn0ThJTMGjEUQn9P8YF74Py/exec';
+
+let visitasSession = [];
+let folioNum = 1;
+let starVals = { interes: 0, potencial: 0 };
+let planSelected = '';
+
+// ── INIT ──────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const hoy = new Date();
+  document.getElementById('fecha-display').textContent =
+    hoy.toLocaleDateString('es-MX', { day:'2-digit', month:'2-digit', year:'numeric' });
+  actualizarFolio();
+
+  // Radio groups
+  document.querySelectorAll('.radio-group').forEach(rg => {
+    rg.querySelectorAll('.radio-opt').forEach(opt => {
+      opt.addEventListener('click', () => {
+        rg.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+      });
+    });
+  });
+
+  // Checkboxes
+  document.querySelectorAll('.check-opt').forEach(opt => {
+    opt.addEventListener('click', () => opt.classList.toggle('checked'));
+  });
+
+  // Ping sheets
+  pingSheets();
+});
+
+function pingSheets() {
+  fetch(SHEETS_URL + '?ping=1', { method: 'GET', mode: 'no-cors' })
+    .then(() => { setConn(true); })
+    .catch(() => { setConn(false); });
+  setTimeout(pingSheets, 30000);
+}
+
+function setConn(ok) {
+  document.getElementById('conn-dot').style.background = ok ? '#4ade80' : '#f87171';
+  document.getElementById('conn-label').textContent = ok ? 'Conectado a Sheets' : 'Sin conexión';
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (id === 'dashboard') renderDashboard();
+}
+
+// ── STARS ─────────────────────────────────────────────────────
+function setStar(type, val) {
+  starVals[type] = val;
+  document.querySelectorAll(`#stars-${type} .star`).forEach((s, i) => {
+    s.classList.toggle('lit', i < val);
+  });
+}
+
+// ── PLAN ──────────────────────────────────────────────────────
+function selectPlan(p) {
+  planSelected = p;
+  document.querySelectorAll('.plan-card').forEach(c => {
+    c.classList.toggle('selected', c.querySelector('.plan-name').textContent === p);
+  });
+}
+
+// ── FOLIO ─────────────────────────────────────────────────────
+function actualizarFolio() {
+  document.getElementById('folio-display').textContent = 'VIS-' + String(folioNum).padStart(3, '0');
+}
+
+// ── GET CHECKED ───────────────────────────────────────────────
+function getChecked(containerId) {
+  const vals = [];
+  document.querySelectorAll(`#${containerId} .check-opt.checked input`).forEach(i => vals.push(i.value));
+  return vals.join(', ');
+}
+
+function getRadio(name) {
+  const sel = document.querySelector(`input[name="${name}"]:checked`);
+  return sel ? sel.value : '';
+}
+
+// ── GUARDAR ───────────────────────────────────────────────────
+async function guardarVisita() {
+  const negocio = document.getElementById('f-negocio').value.trim();
+  const zona = document.getElementById('f-zona').value.trim();
+  const contacto = document.getElementById('f-contacto').value.trim();
+  const proveedor = document.getElementById('f-proveedor').value;
+
+  if (!negocio || !zona || !contacto || !proveedor) {
+    showToast('⚠️ Completa los campos obligatorios (*)','error');
+    return;
+  }
+
+  const btn = document.getElementById('btn-guardar');
+  btn.disabled = true;
+  btn.textContent = '⏳ Guardando...';
+
+  const folio = 'VIS-' + String(folioNum).padStart(3, '0');
+  const hoy = new Date().toLocaleDateString('es-MX');
+
+  const data = {
+    fecha: hoy,
+    folio,
+    promotor: document.getElementById('f-promotor').value.trim() || '—',
+    zona,
+    calle: document.getElementById('f-calle').value.trim(),
+    negocio,
+    giro: document.getElementById('f-giro').value,
+    empleados: document.getElementById('f-empleados').value,
+    sucursales: getRadio('sucursales'),
+    contacto,
+    cargo: document.getElementById('f-cargo').value.trim(),
+    telefono: document.getElementById('f-tel').value.trim(),
+    email: document.getElementById('f-email').value.trim(),
+    tomador: getRadio('tomador'),
+    proveedor,
+    plan: document.getElementById('f-plan').value.trim(),
+    contrato: document.getElementById('f-contrato').value,
+    satisfaccion: document.getElementById('f-satisfaccion').value,
+    hallazgos: document.getElementById('f-hallazgos').value.trim(),
+    necesidades: getChecked('cg-necesidades'),
+    objeciones: getChecked('cg-objeciones'),
+    interes: starVals.interes,
+    potencial: starVals.potencial,
+    planRecomendado: planSelected,
+    accion: document.getElementById('f-accion').value,
+    seguimiento: document.getElementById('f-seguimiento').value,
+    observaciones: document.getElementById('f-observaciones').value.trim(),
+  };
+
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    visitasSession.push(data);
+    folioNum++;
+    actualizarFolio();
+    document.getElementById('badge-visitas').textContent = visitasSession.length;
+    renderListaVisitas();
+    showToast('✅ Visita guardada en Google Sheets', 'success');
+    limpiarForm();
+
+  } catch (err) {
+    showToast('❌ Error de conexión. Intenta de nuevo.', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 Guardar en Sheets';
+  }
+}
+
+// ── LIMPIAR ───────────────────────────────────────────────────
+function limpiarForm() {
+  ['f-promotor','f-zona','f-calle','f-negocio','f-giro','f-empleados',
+   'f-contacto','f-cargo','f-tel','f-email','f-proveedor','f-plan',
+   'f-contrato','f-satisfaccion','f-hallazgos','f-accion','f-seguimiento','f-observaciones'
+  ].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+
+  document.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+  document.querySelectorAll('.check-opt').forEach(o => o.classList.remove('checked'));
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  setStar('interes', 0); setStar('potencial', 0);
+  planSelected = '';
+}
+
+// ── LISTA VISITAS ─────────────────────────────────────────────
+function renderListaVisitas() {
+  const el = document.getElementById('lista-visitas');
+  if (!visitasSession.length) {
+    el.innerHTML = '<div class="empty-state"><div class="e-icon">📋</div><p>Aún no has guardado visitas en esta sesión.</p></div>';
+    return;
+  }
+  el.innerHTML = visitasSession.slice().reverse().map(v => {
+    const nivel = v.interes >= 4 ? 'alta' : v.interes >= 2 ? 'media' : 'baja';
+    const labelNivel = v.interes >= 4 ? 'Interés alto' : v.interes >= 2 ? 'Interés medio' : 'Interés bajo';
+    return `<div class="visita-item">
+      <div class="visita-left">
+        <div class="v-name">${v.negocio}</div>
+        <div class="v-meta">${v.zona} · ${v.proveedor} · ${v.folio}</div>
+      </div>
+      <span class="v-badge ${nivel}">${labelNivel}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────
+function renderDashboard() {
+  const total = visitasSession.length;
+  const contactos = visitasSession.filter(v => v.contacto && v.contacto !== '—').length;
+  const tomadores = visitasSession.filter(v => v.tomador === 'Sí, tomador de decisión').length;
+  const seguimientos = visitasSession.filter(v => v.seguimiento).length;
+
+  document.getElementById('kpi-visitas').textContent = total;
+  document.getElementById('kpi-contactos').textContent = contactos;
+  document.getElementById('kpi-tomadores').textContent = tomadores;
+  document.getElementById('kpi-seguimientos').textContent = seguimientos;
+
+  // Interés promedio
+  const conInteres = visitasSession.filter(v => v.interes > 0);
+  if (conInteres.length) {
+    const prom = conInteres.reduce((a, v) => a + Number(v.interes), 0) / conInteres.length;
+    document.getElementById('kpi-interes').textContent = prom.toFixed(1);
+    document.getElementById('kpi-interes-sub').textContent = `Basado en ${conInteres.length} visita(s)`;
+  }
+
+  renderBarChart('chart-competidores', countField('proveedor'), '#3b82f6');
+  renderBarChart('chart-necesidades', countMulti('necesidades'), '#16a34a');
+  renderBarChart('chart-objeciones', countMulti('objeciones'), '#c2410c');
+}
+
+function countField(field) {
+  const counts = {};
+  visitasSession.forEach(v => {
+    if (v[field]) counts[v[field]] = (counts[v[field]] || 0) + 1;
+  });
+  return Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,5);
+}
+
+function countMulti(field) {
+  const counts = {};
+  visitasSession.forEach(v => {
+    if (v[field]) v[field].split(', ').forEach(x => {
+      if (x.trim()) counts[x.trim()] = (counts[x.trim()] || 0) + 1;
+    });
+  });
+  return Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,5);
+}
+
+function renderBarChart(containerId, data, color) {
+  const el = document.getElementById(containerId);
+  if (!data.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:24px"><p>Registra visitas para ver datos</p></div>';
+    return;
+  }
+  const max = data[0][1];
+  el.innerHTML = data.map(([name, count]) => `
+    <div class="bar-row-item">
+      <div class="bar-name" title="${name}">${name}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(count/max*100)}%;background:${color}"></div></div>
+      <div class="bar-n">${count}</div>
+    </div>
+  `).join('');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
