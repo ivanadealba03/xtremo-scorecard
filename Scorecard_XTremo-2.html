@@ -2,542 +2,396 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>X-Tremo · Scorecard</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--azul:#1a3a5c;--azul-mid:#2563a8;--azul-light:#dbeafe;--azul-pale:#f0f6ff;--verde:#166534;--verde-light:#dcfce7;--naranja:#c2410c;--naranja-light:#ffedd5;--gris-900:#111827;--gris-700:#374151;--gris-500:#6b7280;--gris-300:#d1d5db;--gris-100:#f3f4f6;--gris-50:#f9fafb;--blanco:#ffffff;--radio:10px;--radio-lg:16px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:#e8edf5;min-height:100vh;color:var(--gris-900)}
-.app-header{background:var(--azul);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+body{font-family:'DM Sans',sans-serif;background:#e8edf5;color:#111827}
+.header{background:#1a3a5c;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .brand{display:flex;align-items:center;gap:10px}
-.logo-mark{width:30px;height:30px;background:#d97706;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white}
+.logo{width:30px;height:30px;background:#d97706;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white}
 .brand-name{font-size:14px;font-weight:600;color:white}
-.brand-sub{font-size:10px;color:rgba(255,255,255,0.5);margin-top:1px}
-.conn-status{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.7)}
-.conn-dot{width:7px;height:7px;border-radius:50%;background:#4ade80}
-.nav-wrap{background:var(--blanco);border-bottom:1px solid var(--gris-300);padding:0 8px;display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.nav-wrap::-webkit-scrollbar{display:none}
-.nav-tab{padding:12px 12px;font-size:12px;font-weight:500;color:var(--gris-500);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all .15s}
-.nav-tab.active{color:var(--azul-mid);border-bottom-color:var(--azul-mid)}
-.badge-count{background:var(--azul-light);color:var(--azul-mid);font-size:10px;font-weight:600;padding:1px 5px;border-radius:20px;margin-left:3px}
+.brand-sub{font-size:10px;color:rgba(255,255,255,0.5)}
+.conn{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.7)}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80}
+.tabs{background:white;border-bottom:1px solid #d1d5db;display:flex;overflow-x:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{padding:12px 14px;font-size:12px;font-weight:500;color:#6b7280;border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;font-family:'DM Sans',sans-serif;cursor:pointer}
+.tab-btn.active{color:#2563a8;border-bottom-color:#2563a8}
 .main{max-width:700px;margin:0 auto;padding:16px 12px 80px}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-.section-card{background:var(--blanco);border-radius:var(--radio-lg);box-shadow:0 1px 3px rgba(0,0,0,0.08);margin-bottom:12px;overflow:hidden}
-.section-head{padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--gris-100)}
-.s-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px}
-.section-head h3{font-size:12px;font-weight:600;color:var(--azul);letter-spacing:.04em;text-transform:uppercase}
-.section-body{padding:16px}
-.fg{display:grid;gap:12px}
-.fg-2{grid-template-columns:1fr 1fr}
-.fg-full{grid-column:1/-1}
+.panel{display:none}
+.panel.active{display:block}
+.folio-bar{background:#1a3a5c;border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.folio-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px}
+.folio-val{font-size:13px;font-weight:600;color:white}
+.folio-input{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 10px;font-size:13px;color:white;font-family:'DM Sans',sans-serif;width:100%}
+.folio-input::placeholder{color:rgba(255,255,255,0.35)}
+.card{background:white;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:12px;overflow:hidden}
+.card-head{padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #f3f4f6}
+.card-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px}
+.card-head h3{font-size:12px;font-weight:600;color:#1a3a5c;letter-spacing:.04em;text-transform:uppercase}
+.card-body{padding:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
 .field{display:flex;flex-direction:column;gap:4px}
-.field label{font-size:10px;font-weight:600;color:var(--gris-500);text-transform:uppercase;letter-spacing:.06em}
-.field label .req{color:#ef4444;margin-left:2px}
-.field input,.field select,.field textarea{padding:9px 11px;border:1.5px solid var(--gris-300);border-radius:var(--radio);font-size:14px;font-family:'DM Sans',sans-serif;color:var(--gris-900);background:var(--blanco);transition:border-color .15s;width:100%;-webkit-appearance:none}
-.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--azul-mid);box-shadow:0 0 0 3px rgba(37,99,168,.1)}
+.field label{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em}
+.req{color:#ef4444;margin-left:2px}
+.field input,.field select,.field textarea{padding:9px 11px;border:1.5px solid #d1d5db;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:#111827;background:white;width:100%;-webkit-appearance:none}
 .field textarea{resize:vertical;min-height:68px;line-height:1.5}
-.folio-row{background:var(--azul);border-radius:var(--radio-lg);padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-.folio-field label{font-size:10px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px}
-.folio-field span{font-size:13px;font-weight:600;color:white}
-.folio-field input{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 10px;font-size:13px;color:white;font-family:'DM Sans',sans-serif;width:100%}
-.folio-field input::placeholder{color:rgba(255,255,255,.35)}
-.folio-field input:focus{outline:none;border-color:rgba(255,255,255,.5)}
-.radio-group{display:flex;gap:8px;flex-wrap:wrap}
-.radio-opt{display:flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--gris-300);border-radius:20px;cursor:pointer;font-size:13px;color:var(--gris-700);transition:all .15s;user-select:none}
-.radio-opt input{display:none}
-.radio-opt.selected{border-color:var(--azul-mid);background:var(--azul-light);color:var(--azul-mid);font-weight:500}
-.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.check-opt{display:flex;align-items:center;gap:7px;padding:8px 11px;border:1.5px solid var(--gris-300);border-radius:var(--radio);cursor:pointer;font-size:12px;color:var(--gris-700);transition:all .15s;user-select:none}
-.check-opt input{display:none}
-.cb{width:15px;height:15px;border-radius:4px;border:1.5px solid var(--gris-300);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.check-opt.checked-blue .cb{background:var(--azul-mid);border-color:var(--azul-mid)}
-.check-opt.checked-blue .cb::after{content:'✓';font-size:9px;color:white;font-weight:700}
-.check-opt.checked-blue{border-color:var(--azul-mid);background:var(--azul-pale);color:var(--azul)}
-.check-opt.checked-green .cb{background:var(--verde);border-color:var(--verde)}
-.check-opt.checked-green .cb::after{content:'✓';font-size:9px;color:white;font-weight:700}
-.check-opt.checked-green{border-color:var(--verde);background:var(--verde-light);color:var(--verde)}
-.check-opt.checked-orange .cb{background:var(--naranja);border-color:var(--naranja)}
-.check-opt.checked-orange .cb::after{content:'✓';font-size:9px;color:white;font-weight:700}
-.check-opt.checked-orange{border-color:var(--naranja);background:var(--naranja-light);color:var(--naranja)}
-.star-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gris-100)}
+.radio-wrap{display:flex;gap:8px;flex-wrap:wrap}
+.radio-pill{position:relative;display:inline-block}
+.radio-pill input[type=radio]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;margin:0;cursor:pointer;z-index:2}
+.radio-pill span{display:inline-block;padding:8px 14px;border:1.5px solid #d1d5db;border-radius:20px;font-size:13px;color:#374151;background:white;cursor:pointer;font-family:'DM Sans',sans-serif}
+.radio-pill input[type=radio]:checked+span{border-color:#2563a8;background:#dbeafe;color:#2563a8;font-weight:500}
+/* CHECKBOXES - lista vertical simple, sin grid */
+.check-list{display:flex;flex-direction:column;gap:6px}
+.check-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid #d1d5db;border-radius:10px;background:white;cursor:pointer;min-height:48px}
+.check-item input[type=checkbox]{width:20px;height:20px;min-width:20px;cursor:pointer;accent-color:#166534;border-radius:4px}
+.check-item.orange input[type=checkbox]{accent-color:#c2410c}
+.check-item span{font-size:13px;color:#374151;line-height:1.3}
+.check-item input[type=checkbox]:checked~span{font-weight:500}
+.check-item.green input[type=checkbox]:checked~span{color:#166534}
+.check-item.orange input[type=checkbox]:checked~span{color:#c2410c}
+.check-2col{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.star-section{display:flex;flex-direction:column}
+.star-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f3f4f6}
 .star-row:last-child{border-bottom:none}
-.star-label{font-size:13px;color:var(--gris-700)}
+.star-lbl{font-size:13px;color:#374151}
 .stars{display:flex;gap:4px}
-.star{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--gris-300);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;transition:all .1s;color:var(--gris-500);font-weight:500}
-.star.lit{background:#fef3c7;border-color:#f59e0b;color:#d97706}
-.plan-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
-.plan-card{border:2px solid var(--gris-300);border-radius:var(--radio-lg);padding:12px 8px;cursor:pointer;transition:all .15s;text-align:center}
-.plan-card.selected{border-color:var(--azul-mid);background:var(--azul-light)}
-.plan-name{font-size:12px;font-weight:600;color:var(--azul)}
-.plan-speed{font-size:18px;font-weight:700;color:var(--azul-mid);margin:3px 0}
-.plan-price{font-size:11px;color:var(--gris-500)}
+.star-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid #d1d5db;background:white;cursor:pointer;font-size:14px;font-weight:500;color:#9ca3af;font-family:'DM Sans',sans-serif;-webkit-appearance:none}
+.star-btn.lit{background:#fef3c7;border-color:#f59e0b;color:#d97706}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.plan-btn{border:2px solid #d1d5db;border-radius:12px;padding:12px 8px;cursor:pointer;background:white;font-family:'DM Sans',sans-serif;width:100%;-webkit-appearance:none}
+.plan-btn.selected{border-color:#2563a8;background:#dbeafe}
+.pname{font-size:12px;font-weight:600;color:#1a3a5c;display:block}
+.pspeed{font-size:18px;font-weight:700;color:#2563a8;display:block;margin:3px 0}
+.pprice{font-size:11px;color:#6b7280;display:block}
 .btn-row{display:flex;gap:8px;margin-top:8px}
-.btn{padding:13px 20px;border-radius:var(--radio);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px}
-.btn-primary{background:var(--azul-mid);color:white;flex:1}
-.btn-primary:active{background:var(--azul)}
-.btn-primary:disabled{background:var(--gris-300);cursor:not-allowed}
-.btn-secondary{background:var(--gris-100);color:var(--gris-700)}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gris-900);color:white;padding:12px 20px;border-radius:var(--radio);font-size:13px;font-weight:500;transition:transform .3s ease;z-index:999;white-space:nowrap}
+.btn{padding:13px 20px;border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:7px;-webkit-appearance:none}
+.btn-primary{background:#2563a8;color:white;flex:1}
+.btn-primary:disabled{background:#d1d5db}
+.btn-sec{background:#f3f4f6;color:#374151}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#111827;color:white;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
-.toast.success{background:var(--verde)}
-.toast.error{background:#dc2626}
+.toast.ok{background:#166534}
+.toast.err{background:#dc2626}
+.v-item{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid #f3f4f6;font-size:13px}
+.v-item:last-child{border-bottom:none}
+.v-name{font-weight:600}
+.v-meta{font-size:11px;color:#6b7280;margin-top:2px}
+.badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px}
+.badge.alta{background:#dcfce7;color:#166534}
+.badge.media{background:#fef3c7;color:#92400e}
+.badge.baja{background:#f3f4f6;color:#6b7280}
+.empty{text-align:center;padding:36px 16px;color:#6b7280;font-size:13px}
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.kpi-card{background:var(--blanco);border-radius:var(--radio-lg);padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.kpi{background:white;border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .kpi-val{font-size:28px;font-weight:700;line-height:1}
-.kpi-lbl{font-size:11px;color:var(--gris-500);margin-top:3px;font-weight:500}
-.bar-row-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px}
-.bar-name{width:110px;text-align:right;color:var(--gris-700);flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bar-track{flex:1;height:9px;background:var(--gris-100);border-radius:5px;overflow:hidden}
-.bar-fill{height:100%;border-radius:5px;transition:width .5s ease}
-.bar-n{width:20px;text-align:right;color:var(--gris-500);flex-shrink:0}
-.visita-item{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--gris-100);font-size:13px}
-.visita-item:last-child{border-bottom:none}
-.v-name{font-weight:600;color:var(--gris-900)}
-.v-meta{font-size:11px;color:var(--gris-500);margin-top:2px}
-.v-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;flex-shrink:0}
-.v-badge.alta{background:var(--verde-light);color:var(--verde)}
-.v-badge.media{background:#fef3c7;color:#92400e}
-.v-badge.baja{background:var(--gris-100);color:var(--gris-500)}
-.empty-state{text-align:center;padding:36px 16px;color:var(--gris-500);font-size:13px}
-.fase-block{border-left:4px solid;border-radius:0 var(--radio) var(--radio) 0;padding:14px 16px;margin-bottom:12px}
-.fase-block.azul{border-color:var(--azul-mid);background:var(--azul-pale)}
-.fase-block.verde{border-color:#16a34a;background:var(--verde-light)}
-.fase-block.naranja{border-color:var(--naranja);background:var(--naranja-light)}
-.fase-block h4{font-size:13px;font-weight:700;margin-bottom:8px}
-.fase-block.azul h4{color:var(--azul)}
-.fase-block.verde h4{color:var(--verde)}
-.fase-block.naranja h4{color:var(--naranja)}
-.fase-block ul{padding-left:16px}
-.fase-block ul li{font-size:12px;color:var(--gris-700);margin-bottom:5px;line-height:1.45}
-.guion-box{background:var(--azul-pale);border:1px solid var(--azul-light);border-radius:var(--radio);padding:12px 14px;font-size:12px;font-style:italic;color:var(--azul);line-height:1.6;margin:8px 0}
-.guion-box strong{font-style:normal;font-size:10px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;color:var(--gris-500)}
-.info-box{background:var(--azul-pale);border:1px solid var(--azul-light);border-left:4px solid var(--azul-mid);border-radius:0 var(--radio) var(--radio) 0;padding:12px 14px;margin:12px 0}
-.info-box strong{font-size:13px;color:var(--azul);display:block;margin-bottom:3px}
-.info-box p{font-size:12px;color:var(--gris-700);line-height:1.5}
-.metric-table{width:100%;border-collapse:collapse;font-size:12px}
-.metric-table th{background:var(--azul);color:white;padding:8px 10px;text-align:left;font-weight:600;font-size:11px}
-.metric-table td{padding:7px 10px;border-bottom:1px solid var(--gris-100);color:var(--gris-700)}
-.metric-table tr:nth-child(even) td{background:var(--gris-50)}
-.tag-v{background:var(--verde-light);color:var(--verde);padding:2px 7px;border-radius:10px;font-weight:600;font-size:10px}
-.tag-r{background:#fee2e2;color:#dc2626;padding:2px 7px;border-radius:10px;font-weight:600;font-size:10px}
-@media(max-width:480px){.fg-2{grid-template-columns:1fr}.plan-cards{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}.folio-row{grid-template-columns:1fr 1fr}}
+.kpi-lbl{font-size:11px;color:#6b7280;margin-top:3px;font-weight:500}
+.bar-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px}
+.bar-name{width:110px;text-align:right;color:#374151;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{flex:1;height:9px;background:#f3f4f6;border-radius:5px;overflow:hidden}
+.bar-fill{height:100%;border-radius:5px}
+.bar-n{width:20px;text-align:right;color:#6b7280;flex-shrink:0}
+.fase{border-left:4px solid;border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:12px}
+.fase.azul{border-color:#2563a8;background:#f0f6ff}
+.fase.verde{border-color:#16a34a;background:#dcfce7}
+.fase.naranja{border-color:#c2410c;background:#ffedd5}
+.fase h4{font-size:13px;font-weight:700;margin-bottom:8px}
+.fase.azul h4{color:#1a3a5c}
+.fase.verde h4{color:#166534}
+.fase.naranja h4{color:#c2410c}
+.fase ul{padding-left:16px}
+.fase ul li{font-size:12px;color:#374151;margin-bottom:5px;line-height:1.45}
+.guion{background:#f0f6ff;border:1px solid #dbeafe;border-radius:10px;padding:12px 14px;font-size:12px;font-style:italic;color:#1a3a5c;line-height:1.6;margin:8px 0}
+.guion strong{font-style:normal;font-size:10px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;color:#6b7280}
+.info-box{background:#f0f6ff;border-left:4px solid #2563a8;border-radius:0 10px 10px 0;padding:12px 14px;margin:12px 0}
+.info-box strong{font-size:13px;color:#1a3a5c;display:block;margin-bottom:3px}
+.info-box p{font-size:12px;color:#374151;line-height:1.5}
+.mtable{width:100%;border-collapse:collapse;font-size:12px}
+.mtable th{background:#1a3a5c;color:white;padding:8px 10px;text-align:left;font-weight:600;font-size:11px}
+.mtable td{padding:7px 10px;border-bottom:1px solid #f3f4f6;color:#374151}
+.mtable tr:nth-child(even) td{background:#f9fafb}
+.tv{background:#dcfce7;color:#166534;padding:2px 7px;border-radius:10px;font-weight:600;font-size:10px}
+.tr2{background:#fee2e2;color:#dc2626;padding:2px 7px;border-radius:10px;font-weight:600;font-size:10px}
+@media(max-width:480px){.grid2{grid-template-columns:1fr}.plan-grid{grid-template-columns:1fr}.check-2col{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header class="app-header">
+<div class="header">
   <div class="brand">
-    <div class="logo-mark">X</div>
+    <div class="logo">X</div>
     <div><div class="brand-name">X-TREMO INTERNET</div><div class="brand-sub">Scorecard de Prospección B2B</div></div>
   </div>
-  <div class="conn-status"><div class="conn-dot" id="conn-dot"></div><span id="conn-label">Conectando...</span></div>
-</header>
-
-<nav class="nav-wrap">
-  <button class="nav-tab active" onclick="showTab('scorecard',this)">📋 Scorecard</button>
-  <button class="nav-tab" onclick="showTab('visitas',this)">📁 Visitas<span class="badge-count" id="badge-visitas">0</span></button>
-  <button class="nav-tab" onclick="showTab('dashboard',this)">📊 Dashboard</button>
-  <button class="nav-tab" onclick="showTab('guia',this)">🗺️ Guía</button>
-  <button class="nav-tab" onclick="showTab('metodo',this)">📈 Metodología</button>
-</nav>
-
+  <div class="conn"><div class="dot" id="cdot"></div><span id="clbl">Conectando...</span></div>
+</div>
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('sc',this)">📋 Scorecard</button>
+  <button class="tab-btn" onclick="showTab('vis',this)">📁 Visitas <span id="badge">0</span></button>
+  <button class="tab-btn" onclick="showTab('dash',this)">📊 Dashboard</button>
+  <button class="tab-btn" onclick="showTab('guia',this)">🗺️ Guía</button>
+  <button class="tab-btn" onclick="showTab('met',this)">📈 Metodología</button>
+</div>
 <div class="main">
-
-<!-- SCORECARD -->
-<div id="tab-scorecard" class="tab-panel active">
-  <div class="folio-row">
-    <div class="folio-field"><label>Folio</label><span id="folio-display">VIS-001</span></div>
-    <div class="folio-field"><label>Fecha</label><span id="fecha-display"></span></div>
-    <div class="folio-field"><label>Promotor</label><input type="text" id="f-promotor" placeholder="Tu nombre"></div>
-    <div class="folio-field"><label>Zona / Colonia *</label><input type="text" id="f-zona" placeholder="Ej. Centro"></div>
+<div id="tab-sc" class="panel active">
+  <div class="folio-bar">
+    <div><span class="folio-lbl">Folio</span><span class="folio-val" id="folio">VIS-001</span></div>
+    <div><span class="folio-lbl">Fecha</span><span class="folio-val" id="fecha"></span></div>
+    <div><span class="folio-lbl">Promotor</span><input class="folio-input" id="promotor" placeholder="Tu nombre"></div>
+    <div><span class="folio-lbl">Zona *</span><input class="folio-input" id="zona" placeholder="Ej. Centro"></div>
   </div>
-
-  <div class="section-card">
-    <div class="section-head"><div class="s-icon" style="background:#dbeafe">🏢</div><h3>A. Negocio</h3></div>
-    <div class="section-body">
-      <div class="fg fg-2">
-        <div class="field"><label>Nombre del negocio <span class="req">*</span></label><input type="text" id="f-negocio" placeholder="Nombre comercial"></div>
-        <div class="field"><label>Calle y número</label><input type="text" id="f-calle" placeholder="Ej. Av. Insurgentes 540"></div>
-        <div class="field"><label>Giro / Sector <span class="req">*</span></label>
-          <select id="f-giro">
-            <option value="">Seleccionar...</option>
-            <option>Restaurante / Alimentos</option><option>Consultorio / Clínica</option>
-            <option>Despacho profesional</option><option>Comercio / Retail</option>
-            <option>Educación / Academia</option><option>Manufactura / Industria</option>
-            <option>Hotelería / Hospedaje</option><option>Servicios financieros</option>
-            <option>Logística / Transporte</option><option>Tecnología</option><option>Otro</option>
-          </select>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:#dbeafe">🏢</div><h3>A. Negocio</h3></div>
+    <div class="card-body"><div class="grid2">
+      <div class="field"><label>Nombre del negocio <span class="req">*</span></label><input type="text" id="negocio" placeholder="Nombre comercial"></div>
+      <div class="field"><label>Calle y número</label><input type="text" id="calle" placeholder="Av. Insurgentes 540"></div>
+      <div class="field"><label>Giro / Sector <span class="req">*</span></label>
+        <select id="giro"><option value="">Seleccionar...</option><option>Restaurante / Alimentos</option><option>Consultorio / Clínica</option><option>Despacho profesional</option><option>Comercio / Retail</option><option>Educación / Academia</option><option>Manufactura / Industria</option><option>Hotelería / Hospedaje</option><option>Servicios financieros</option><option>Logística / Transporte</option><option>Tecnología</option><option>Otro</option></select>
+      </div>
+      <div class="field"><label>Empleados estimados</label>
+        <select id="empleados"><option value="">Seleccionar...</option><option>1–5</option><option>6–15</option><option>16–30</option><option>31–50</option><option>51–100</option><option>100+</option></select>
+      </div>
+      <div class="field full"><label>¿Tiene sucursales?</label>
+        <div class="radio-wrap">
+          <label class="radio-pill"><input type="radio" name="suc" value="No"><span>No</span></label>
+          <label class="radio-pill"><input type="radio" name="suc" value="Sí local (2-3)"><span>Sí — local</span></label>
+          <label class="radio-pill"><input type="radio" name="suc" value="Sí regional (4-10)"><span>Sí — regional</span></label>
+          <label class="radio-pill"><input type="radio" name="suc" value="Sí múltiples (10+)"><span>Sí — múltiples</span></label>
         </div>
-        <div class="field"><label>Empleados estimados</label>
-          <select id="f-empleados">
-            <option value="">Seleccionar...</option>
-            <option>1–5</option><option>6–15</option><option>16–30</option>
-            <option>31–50</option><option>51–100</option><option>100+</option>
-          </select>
+      </div>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:#dcfce7">👤</div><h3>B. Contacto</h3></div>
+    <div class="card-body"><div class="grid2">
+      <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="contacto" placeholder="Nombre completo"></div>
+      <div class="field"><label>Cargo</label><input type="text" id="cargo" placeholder="Ej. Gerente, Dueño"></div>
+      <div class="field"><label>Teléfono / WhatsApp</label><input type="tel" id="tel" placeholder="+52 81"></div>
+      <div class="field"><label>Correo</label><input type="email" id="email" placeholder="correo@empresa.com"></div>
+      <div class="field full"><label>Perfil <span class="req">*</span></label>
+        <div class="radio-wrap">
+          <label class="radio-pill"><input type="radio" name="tom" value="Sí, tomador de decisión"><span>✅ Tomador</span></label>
+          <label class="radio-pill"><input type="radio" name="tom" value="Influenciador"><span>🔄 Influenciador</span></label>
+          <label class="radio-pill"><input type="radio" name="tom" value="No, referidor"><span>❌ Sin autoridad</span></label>
         </div>
-        <div class="field fg-full"><label>¿Tiene sucursales?</label>
-          <div class="radio-group" id="rg-sucursales">
-            <label class="radio-opt"><input type="radio" name="sucursales" value="No"> No</label>
-            <label class="radio-opt"><input type="radio" name="sucursales" value="Sí local (2-3)"> Sí — local</label>
-            <label class="radio-opt"><input type="radio" name="sucursales" value="Sí regional (4-10)"> Sí — regional</label>
-            <label class="radio-opt"><input type="radio" name="sucursales" value="Sí múltiples (10+)"> Sí — múltiples</label>
+      </div>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:#fef3c7">📡</div><h3>C. Conectividad actual</h3></div>
+    <div class="card-body"><div class="grid2">
+      <div class="field"><label>Proveedor actual <span class="req">*</span></label>
+        <select id="proveedor"><option value="">Seleccionar...</option><option>Telmex / Infinitum</option><option>Izzi</option><option>Megacable</option><option>Totalplay</option><option>AT&T</option><option>Sin servicio</option><option>X-Tremo (ya cliente)</option><option>Otro</option></select>
+      </div>
+      <div class="field"><label>Plan / Velocidad</label><input type="text" id="plan" placeholder="Ej. 100 Mbps / $899"></div>
+      <div class="field"><label>Madurez del contrato</label>
+        <select id="contrato"><option value="">Seleccionar...</option><option>Sin contrato / Mensual</option><option>Vence en menos de 3 meses</option><option>Vence en 3–6 meses</option><option>Vence en 6–12 meses</option><option>Contrato largo (+12 meses)</option><option>Desconoce</option></select>
+      </div>
+      <div class="field"><label>Satisfacción con proveedor</label>
+        <select id="satisfaccion"><option value="">Seleccionar...</option><option>Muy satisfecho</option><option>Satisfecho</option><option>Neutral</option><option>Insatisfecho</option><option>Muy insatisfecho</option></select>
+      </div>
+      <div class="field full"><label>Dolor / Problemas detectados</label><textarea id="hallazgos" placeholder="Ej. Caídas frecuentes, soporte lento..."></textarea></div>
+    </div></div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:#dcfce7">🎯</div><h3>D. Necesidades detectadas</h3></div>
+    <div class="card-body">
+      <div class="check-2col">
+        <div class="check-item green"><input type="checkbox" id="n1" name="nec" value="Mayor velocidad"><label for="n1"><span>Mayor velocidad</span></label></div>
+        <div class="check-item green"><input type="checkbox" id="n2" name="nec" value="Mayor estabilidad"><label for="n2"><span>Mayor estabilidad</span></label></div>
+        <div class="check-item green"><input type="checkbox" id="n3" name="nec" value="IP fija"><label for="n3"><span>IP fija</span></label></div>
+        <div class="check-item green"><input type="checkbox" id="n4" name="nec" value="Mejor soporte"><label for="n4"><span>Mejor soporte</span></label></div>
+        <div class="check-item green"><input type="checkbox" id="n5" name="nec" value="Cobertura WiFi completa"><label for="n5"><span>Cobertura WiFi</span></label></div>
+        <div class="check-item green"><input type="checkbox" id="n6" name="nec" value="Menor precio"><label for="n6"><span>Menor precio</span></label></div>
+        <div class="check-item green"><input type="checkbox" id="n7" name="nec" value="Sin contrato forzoso"><label for="n7"><span>Sin contrato forzoso</span></label></div>
+        <div class="check-item green"><input type="checkbox" id="n8" name="nec" value="Internet simétrico"><label for="n8"><span>Internet simétrico</span></label></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:#ffedd5">⚠️</div><h3>E. Objeciones presentadas</h3></div>
+    <div class="card-body">
+      <div class="check-2col">
+        <div class="check-item orange"><input type="checkbox" id="o1" name="obj" value="Contrato vigente"><label for="o1"><span>Contrato vigente</span></label></div>
+        <div class="check-item orange"><input type="checkbox" id="o2" name="obj" value="Sin autoridad"><label for="o2"><span>Sin autoridad</span></label></div>
+        <div class="check-item orange"><input type="checkbox" id="o3" name="obj" value="No conoce X-Tremo"><label for="o3"><span>No conoce X-Tremo</span></label></div>
+        <div class="check-item orange"><input type="checkbox" id="o4" name="obj" value="Precio más alto"><label for="o4"><span>Precio más alto</span></label></div>
+        <div class="check-item orange"><input type="checkbox" id="o5" name="obj" value="Satisfecho con actual"><label for="o5"><span>Satisfecho con actual</span></label></div>
+        <div class="check-item orange"><input type="checkbox" id="o6" name="obj" value="No tiene tiempo"><label for="o6"><span>No tiene tiempo</span></label></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-icon" style="background:#f3e8ff">⭐</div><h3>F. Calificación y siguiente paso</h3></div>
+    <div class="card-body">
+      <div class="star-section">
+        <div class="star-row"><span class="star-lbl">Nivel de interés</span>
+          <div class="stars" id="si">
+            <button type="button" class="star-btn" onclick="setStar('i',1)">1</button>
+            <button type="button" class="star-btn" onclick="setStar('i',2)">2</button>
+            <button type="button" class="star-btn" onclick="setStar('i',3)">3</button>
+            <button type="button" class="star-btn" onclick="setStar('i',4)">4</button>
+            <button type="button" class="star-btn" onclick="setStar('i',5)">5</button>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-card">
-    <div class="section-head"><div class="s-icon" style="background:#dcfce7">👤</div><h3>B. Contacto</h3></div>
-    <div class="section-body">
-      <div class="fg fg-2">
-        <div class="field"><label>Nombre <span class="req">*</span></label><input type="text" id="f-contacto" placeholder="Nombre completo"></div>
-        <div class="field"><label>Cargo</label><input type="text" id="f-cargo" placeholder="Ej. Gerente, Dueño"></div>
-        <div class="field"><label>Teléfono / WhatsApp</label><input type="tel" id="f-tel" placeholder="+52 81"></div>
-        <div class="field"><label>Correo</label><input type="email" id="f-email" placeholder="correo@empresa.com"></div>
-        <div class="field fg-full"><label>Perfil <span class="req">*</span></label>
-          <div class="radio-group" id="rg-tomador">
-            <label class="radio-opt"><input type="radio" name="tomador" value="Sí, tomador de decisión"> ✅ Tomador</label>
-            <label class="radio-opt"><input type="radio" name="tomador" value="Influenciador"> 🔄 Influenciador</label>
-            <label class="radio-opt"><input type="radio" name="tomador" value="No, referidor"> ❌ Sin autoridad</label>
+        <div class="star-row"><span class="star-lbl">Potencial de cierre</span>
+          <div class="stars" id="sp">
+            <button type="button" class="star-btn" onclick="setStar('p',1)">1</button>
+            <button type="button" class="star-btn" onclick="setStar('p',2)">2</button>
+            <button type="button" class="star-btn" onclick="setStar('p',3)">3</button>
+            <button type="button" class="star-btn" onclick="setStar('p',4)">4</button>
+            <button type="button" class="star-btn" onclick="setStar('p',5)">5</button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-card">
-    <div class="section-head"><div class="s-icon" style="background:#fef3c7">📡</div><h3>C. Conectividad actual</h3></div>
-    <div class="section-body">
-      <div class="fg fg-2">
-        <div class="field"><label>Proveedor actual <span class="req">*</span></label>
-          <select id="f-proveedor">
-            <option value="">Seleccionar...</option>
-            <option>Telmex / Infinitum</option><option>Izzi</option><option>Megacable</option>
-            <option>Totalplay</option><option>AT&T</option><option>Sin servicio</option>
-            <option>X-Tremo (ya cliente)</option><option>Otro</option>
-          </select>
-        </div>
-        <div class="field"><label>Plan / Velocidad</label><input type="text" id="f-plan" placeholder="Ej. 100 Mbps / $899"></div>
-        <div class="field"><label>Madurez del contrato</label>
-          <select id="f-contrato">
-            <option value="">Seleccionar...</option>
-            <option>Sin contrato / Mensual</option><option>Vence en menos de 3 meses</option>
-            <option>Vence en 3–6 meses</option><option>Vence en 6–12 meses</option>
-            <option>Contrato largo (+12 meses)</option><option>Desconoce</option>
-          </select>
-        </div>
-        <div class="field"><label>Satisfacción con proveedor</label>
-          <select id="f-satisfaccion">
-            <option value="">Seleccionar...</option>
-            <option>Muy satisfecho</option><option>Satisfecho</option>
-            <option>Neutral</option><option>Insatisfecho</option><option>Muy insatisfecho</option>
-          </select>
-        </div>
-        <div class="field fg-full"><label>Dolor / Problemas detectados</label>
-          <textarea id="f-hallazgos" placeholder="Ej. Caídas frecuentes, soporte lento..."></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-card">
-    <div class="section-head"><div class="s-icon" style="background:#dcfce7">🎯</div><h3>D. Necesidades detectadas</h3></div>
-    <div class="section-body">
-      <div class="check-grid" id="cg-necesidades">
-        <label class="check-opt" data-color="green"><input type="checkbox" value="Mayor velocidad"><span class="cb"></span>Mayor velocidad</label>
-        <label class="check-opt" data-color="green"><input type="checkbox" value="Mayor estabilidad"><span class="cb"></span>Mayor estabilidad</label>
-        <label class="check-opt" data-color="green"><input type="checkbox" value="IP fija"><span class="cb"></span>IP fija</label>
-        <label class="check-opt" data-color="green"><input type="checkbox" value="Mejor soporte"><span class="cb"></span>Mejor soporte</label>
-        <label class="check-opt" data-color="green"><input type="checkbox" value="Cobertura WiFi completa"><span class="cb"></span>Cobertura WiFi</label>
-        <label class="check-opt" data-color="green"><input type="checkbox" value="Menor precio"><span class="cb"></span>Menor precio</label>
-        <label class="check-opt" data-color="green"><input type="checkbox" value="Sin contrato forzoso"><span class="cb"></span>Sin contrato forzoso</label>
-        <label class="check-opt" data-color="green"><input type="checkbox" value="Internet simétrico"><span class="cb"></span>Internet simétrico</label>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-card">
-    <div class="section-head"><div class="s-icon" style="background:#ffedd5">⚠️</div><h3>E. Objeciones</h3></div>
-    <div class="section-body">
-      <div class="check-grid" id="cg-objeciones">
-        <label class="check-opt" data-color="orange"><input type="checkbox" value="Contrato vigente"><span class="cb"></span>Contrato vigente</label>
-        <label class="check-opt" data-color="orange"><input type="checkbox" value="Sin autoridad"><span class="cb"></span>Sin autoridad</label>
-        <label class="check-opt" data-color="orange"><input type="checkbox" value="No conoce X-Tremo"><span class="cb"></span>No conoce X-Tremo</label>
-        <label class="check-opt" data-color="orange"><input type="checkbox" value="Precio más alto"><span class="cb"></span>Precio más alto</label>
-        <label class="check-opt" data-color="orange"><input type="checkbox" value="Satisfecho con actual"><span class="cb"></span>Satisfecho con actual</label>
-        <label class="check-opt" data-color="orange"><input type="checkbox" value="No tiene tiempo"><span class="cb"></span>No tiene tiempo</label>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-card">
-    <div class="section-head"><div class="s-icon" style="background:#f3e8ff">⭐</div><h3>F. Calificación y siguiente paso</h3></div>
-    <div class="section-body">
-      <div class="star-row"><span class="star-label">Nivel de interés</span>
-        <div class="stars" id="stars-interes">
-          <div class="star" onclick="setStar('interes',1)">1</div><div class="star" onclick="setStar('interes',2)">2</div>
-          <div class="star" onclick="setStar('interes',3)">3</div><div class="star" onclick="setStar('interes',4)">4</div>
-          <div class="star" onclick="setStar('interes',5)">5</div>
-        </div>
-      </div>
-      <div class="star-row"><span class="star-label">Potencial de cierre</span>
-        <div class="stars" id="stars-potencial">
-          <div class="star" onclick="setStar('potencial',1)">1</div><div class="star" onclick="setStar('potencial',2)">2</div>
-          <div class="star" onclick="setStar('potencial',3)">3</div><div class="star" onclick="setStar('potencial',4)">4</div>
-          <div class="star" onclick="setStar('potencial',5)">5</div>
         </div>
       </div>
       <div style="margin-top:14px">
-        <p style="font-size:11px;font-weight:600;color:var(--gris-500);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Plan recomendado</p>
-        <div class="plan-cards">
-          <div class="plan-card" onclick="selectPlan('Essential')"><div class="plan-name">Essential</div><div class="plan-speed">350M</div><div class="plan-price">$849/mes</div></div>
-          <div class="plan-card" onclick="selectPlan('Smart')"><div class="plan-name">Smart</div><div class="plan-speed">750M</div><div class="plan-price">$1,249/mes</div></div>
-          <div class="plan-card" onclick="selectPlan('Ultimate')"><div class="plan-name">Ultimate</div><div class="plan-speed">1,000M</div><div class="plan-price">$1,999/mes</div></div>
+        <p style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Plan recomendado</p>
+        <div class="plan-grid">
+          <button type="button" class="plan-btn" onclick="selPlan(this,'Essential')"><span class="pname">Essential</span><span class="pspeed">350M</span><span class="pprice">$849/mes</span></button>
+          <button type="button" class="plan-btn" onclick="selPlan(this,'Smart')"><span class="pname">Smart</span><span class="pspeed">750M</span><span class="pprice">$1,249/mes</span></button>
+          <button type="button" class="plan-btn" onclick="selPlan(this,'Ultimate')"><span class="pname">Ultimate</span><span class="pspeed">1,000M</span><span class="pprice">$1,999/mes</span></button>
         </div>
       </div>
-      <div class="fg fg-2" style="margin-top:14px">
+      <div class="grid2" style="margin-top:14px">
         <div class="field"><label>Próxima acción <span class="req">*</span></label>
-          <select id="f-accion">
-            <option value="">Seleccionar...</option>
-            <option>Llamada de seguimiento</option><option>Envío de propuesta</option>
-            <option>Revisita presencial</option><option>Verificación de cobertura</option>
-            <option>Esperando vencimiento</option><option>Sin interés — descartar</option>
-          </select>
+          <select id="accion"><option value="">Seleccionar...</option><option>Llamada de seguimiento</option><option>Envío de propuesta</option><option>Revisita presencial</option><option>Verificación de cobertura</option><option>Esperando vencimiento</option><option>Sin interés — descartar</option></select>
         </div>
-        <div class="field"><label>Fecha de seguimiento</label><input type="date" id="f-seguimiento"></div>
-        <div class="field fg-full"><label>Observaciones</label><textarea id="f-observaciones" placeholder="Detalles para el siguiente contacto..."></textarea></div>
+        <div class="field"><label>Fecha de seguimiento</label><input type="date" id="seguimiento"></div>
+        <div class="field full"><label>Observaciones</label><textarea id="obs" placeholder="Detalles para el siguiente contacto..."></textarea></div>
       </div>
     </div>
   </div>
-
   <div class="btn-row">
-    <button class="btn btn-secondary" onclick="limpiarForm()">🔄 Nueva</button>
-    <button class="btn btn-primary" id="btn-guardar" onclick="guardarVisita()">💾 Guardar en Sheets</button>
+    <button type="button" class="btn btn-sec" onclick="limpiar()">🔄 Nueva</button>
+    <button type="button" class="btn btn-primary" id="btnguardar" onclick="guardar()">💾 Guardar en Sheets</button>
   </div>
 </div>
-
-<!-- VISITAS -->
-<div id="tab-visitas" class="tab-panel">
-  <div class="section-card">
-    <div class="section-head"><div class="s-icon" style="background:#dbeafe">📁</div><h3>Visitas de esta sesión</h3></div>
-    <div id="lista-visitas"><div class="empty-state"><p>💡 Aún sin visitas guardadas.<br><span style="font-size:11px;color:var(--gris-300)">Los datos en Sheets se guardan aunque cierres la app.</span></p></div></div>
-  </div>
+<div id="tab-vis" class="panel">
+  <div class="card"><div class="card-head"><div class="card-icon" style="background:#dbeafe">📁</div><h3>Visitas de esta sesión</h3></div>
+  <div id="lista"><div class="empty">💡 Aún sin visitas guardadas.</div></div></div>
 </div>
-
-<!-- DASHBOARD -->
-<div id="tab-dashboard" class="tab-panel">
+<div id="tab-dash" class="panel">
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-val" id="kpi-visitas" style="color:var(--azul)">0</div><div class="kpi-lbl">Visitas registradas</div></div>
-    <div class="kpi-card"><div class="kpi-val" id="kpi-contactos" style="color:var(--verde)">0</div><div class="kpi-lbl">Contactos efectivos</div></div>
-    <div class="kpi-card"><div class="kpi-val" id="kpi-tomadores" style="color:#1d4ed8">0</div><div class="kpi-lbl">Tomadores de decisión</div></div>
-    <div class="kpi-card"><div class="kpi-val" id="kpi-seguimientos" style="color:#d97706">0</div><div class="kpi-lbl">Con seguimiento</div></div>
+    <div class="kpi"><div class="kpi-val" id="kv" style="color:#1a3a5c">0</div><div class="kpi-lbl">Visitas registradas</div></div>
+    <div class="kpi"><div class="kpi-val" id="kc" style="color:#166534">0</div><div class="kpi-lbl">Contactos efectivos</div></div>
+    <div class="kpi"><div class="kpi-val" id="kt" style="color:#1d4ed8">0</div><div class="kpi-lbl">Tomadores de decisión</div></div>
+    <div class="kpi"><div class="kpi-val" id="ks" style="color:#d97706">0</div><div class="kpi-lbl">Con seguimiento</div></div>
   </div>
-  <div class="section-card"><div class="section-head"><div class="s-icon" style="background:#fee2e2">🏢</div><h3>Competidores en zona</h3></div><div class="section-body" id="chart-comp"><div class="empty-state" style="padding:20px"><p>Registra visitas para ver datos</p></div></div></div>
-  <div class="section-card"><div class="section-head"><div class="s-icon" style="background:#dcfce7">🎯</div><h3>Necesidades detectadas</h3></div><div class="section-body" id="chart-nec"><div class="empty-state" style="padding:20px"><p>Registra visitas para ver datos</p></div></div></div>
-  <div class="section-card"><div class="section-head"><div class="s-icon" style="background:#ffedd5">⚠️</div><h3>Objeciones frecuentes</h3></div><div class="section-body" id="chart-obj"><div class="empty-state" style="padding:20px"><p>Registra visitas para ver datos</p></div></div></div>
+  <div class="card"><div class="card-head"><div class="card-icon" style="background:#fee2e2">🏢</div><h3>Competidores en zona</h3></div><div class="card-body" id="ccomp"><div class="empty" style="padding:16px">Registra visitas para ver datos</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-icon" style="background:#dcfce7">🎯</div><h3>Necesidades detectadas</h3></div><div class="card-body" id="cnec"><div class="empty" style="padding:16px">Registra visitas para ver datos</div></div></div>
+  <div class="card"><div class="card-head"><div class="card-icon" style="background:#ffedd5">⚠️</div><h3>Objeciones frecuentes</h3></div><div class="card-body" id="cobj"><div class="empty" style="padding:16px">Registra visitas para ver datos</div></div></div>
 </div>
-
-<!-- GUÍA -->
-<div id="tab-guia" class="tab-panel">
-  <div class="section-card"><div class="section-head"><div class="s-icon" style="background:#dbeafe">📖</div><h3>Guía operativa del promotor</h3></div>
-  <div class="section-body">
-    <div class="fase-block azul"><h4>🔍 Antes de entrar (30 seg)</h4><ul>
-      <li>Observa empleados, computadoras, POS, cámaras.</li>
-      <li>Busca stickers del proveedor actual en la fachada.</li>
-      <li>Detecta si tiene más de un piso — oportunidad de instalación personalizada.</li>
-    </ul></div>
-    <div class="fase-block naranja"><h4>🚪 Manejo del portero</h4>
-      <div class="guion-box"><strong>Guión recomendado</strong>"Buenos días, vengo de X-Tremo, proveedor de internet empresarial. Quisiera hablar con quien administra los servicios de internet del negocio. ¿Con quién podría platicar?"</div>
+<div id="tab-guia" class="panel">
+  <div class="card"><div class="card-head"><div class="card-icon" style="background:#dbeafe">📖</div><h3>Guía operativa del promotor</h3></div>
+  <div class="card-body">
+    <div class="fase azul"><h4>🔍 Antes de entrar (30 seg)</h4><ul><li>Observa empleados, computadoras, POS, cámaras.</li><li>Busca stickers del proveedor actual en la fachada.</li><li>Detecta si tiene más de un piso — oportunidad de instalación personalizada.</li></ul></div>
+    <div class="fase naranja"><h4>🚪 Manejo del portero</h4>
+      <div class="guion"><strong>Guión recomendado</strong>"Buenos días, vengo de X-Tremo, proveedor de internet empresarial. Quisiera hablar con quien administra los servicios de internet del negocio."</div>
       <ul><li>Si no está el dueño: pregunta cuándo regresa y deja tarjeta.</li><li>Si hay negativa: anota "Sin acceso" y planea revisita.</li></ul>
     </div>
-    <div class="fase-block verde"><h4>💬 Las 5 preguntas clave (habla 30%, escucha 70%)</h4>
-      <div class="guion-box"><strong>1. Responsable</strong>"¿Quién decide sobre los servicios de internet aquí?"</div>
-      <div class="guion-box"><strong>2. Situación actual</strong>"¿Con qué proveedor tienen y cómo les ha funcionado?"</div>
-      <div class="guion-box"><strong>3. Detectar dolor</strong>"¿Han tenido caídas, lentitud o problemas con el soporte?"</div>
-      <div class="guion-box"><strong>4. Ventana de oportunidad</strong>"¿Saben cuándo vence el contrato con su proveedor?"</div>
-      <div class="guion-box"><strong>5. La pregunta de oro ⭐</strong>"¿Hay zonas en el negocio donde no llega bien el WiFi?"</div>
+    <div class="fase verde"><h4>💬 Las 5 preguntas clave</h4>
+      <div class="guion"><strong>1. Responsable</strong>"¿Quién decide sobre los servicios de internet aquí?"</div>
+      <div class="guion"><strong>2. Situación actual</strong>"¿Con qué proveedor tienen y cómo les ha funcionado?"</div>
+      <div class="guion"><strong>3. Detectar dolor</strong>"¿Han tenido caídas, lentitud o problemas con el soporte?"</div>
+      <div class="guion"><strong>4. Ventana de oportunidad</strong>"¿Saben cuándo vence el contrato con su proveedor?"</div>
+      <div class="guion"><strong>5. La pregunta de oro ⭐</strong>"¿Hay zonas en el negocio donde no llega bien el WiFi?"</div>
     </div>
-    <div class="fase-block azul"><h4>✅ Después — Registro inmediato (máx 3 min)</h4><ul>
-      <li>☐ Nombre del negocio y folio.</li>
-      <li>☐ Contacto y cargo exacto.</li>
-      <li>☐ Proveedor y cuándo vence.</li>
-      <li>☐ Dolor mencionado.</li>
-      <li>☐ Interés honesto (1-5).</li>
-      <li>☐ Próxima acción con fecha. <strong>Sin fecha = sin seguimiento.</strong></li>
-    </ul></div>
+    <div class="fase azul"><h4>✅ Después — Registro inmediato (máx 3 min)</h4><ul><li>☐ Nombre del negocio y folio.</li><li>☐ Contacto y cargo exacto.</li><li>☐ Proveedor y cuándo vence.</li><li>☐ Dolor mencionado.</li><li>☐ Interés honesto (1-5).</li><li>☐ Próxima acción con fecha. <strong>Sin fecha = sin seguimiento.</strong></li></ul></div>
     <div class="info-box"><strong>📞 Contacto X-Tremo</strong><p>WhatsApp: <strong>(+52) 81 4168-7090</strong><br>Ventas: Lun-Vie 8-20h · Sáb-Dom 9-14h</p></div>
   </div></div>
 </div>
-
-<!-- METODOLOGÍA -->
-<div id="tab-metodo" class="tab-panel">
-  <div class="section-card"><div class="section-head"><div class="s-icon" style="background:#dbeafe">📈</div><h3>Metodología de análisis</h3></div>
-  <div class="section-body">
-    <div class="fase-block azul"><h4>Fase 1 — Planificación de zona</h4><ul>
-      <li>Bloques de 4-6 manzanas por sesión. Cubre una zona completa antes de pasar a otra.</li>
-      <li>Meta: mínimo 15 visitas/día, óptimo 20+.</li>
-      <li>Revisa seguimientos pendientes antes de planear visitas nuevas.</li>
-    </ul></div>
-    <div class="fase-block verde"><h4>Fase 2 — Documentación estructurada</h4><ul>
-      <li>Scorecard después de cada visita. Nunca acumules más de 3 sin registrar.</li>
-      <li>Al cierre del día completa campos faltantes mientras la memoria está fresca.</li>
-    </ul></div>
-    <div class="fase-block naranja"><h4>Fase 3 — Análisis semanal (30-45 min)</h4><ul>
-      <li>¿Qué giros convierten mejor? Enfoca el esfuerzo ahí.</li>
-      <li>¿Qué zonas tienen más insatisfacción? = mayor probabilidad de cierre.</li>
-      <li>¿Cuántos contratos vencen en 90 días? Son los prospectos calientes.</li>
-    </ul></div>
-    <p style="font-size:12px;font-weight:600;color:var(--gris-700);margin:14px 0 8px">Métricas de salud operativa</p>
-    <table class="metric-table">
-      <thead><tr><th>Indicador</th><th>Mínimo</th><th>Óptimo</th><th>Alerta</th></tr></thead>
-      <tbody>
-        <tr><td>Visitas / día</td><td>15</td><td><span class="tag-v">20+</span></td><td><span class="tag-r">&lt;10</span></td></tr>
-        <tr><td>Contacto efectivo</td><td>50%</td><td><span class="tag-v">65%+</span></td><td><span class="tag-r">&lt;40%</span></td></tr>
-        <tr><td>Tomadores / contactos</td><td>30%</td><td><span class="tag-v">45%+</span></td><td><span class="tag-r">&lt;20%</span></td></tr>
-        <tr><td>Oportunidades</td><td>10%</td><td><span class="tag-v">20%+</span></td><td><span class="tag-r">&lt;5%</span></td></tr>
-        <tr><td>Seguimientos cumplidos</td><td>80%</td><td><span class="tag-v">95%+</span></td><td><span class="tag-r">&lt;70%</span></td></tr>
-      </tbody>
-    </table>
+<div id="tab-met" class="panel">
+  <div class="card"><div class="card-head"><div class="card-icon" style="background:#dbeafe">📈</div><h3>Metodología de análisis</h3></div>
+  <div class="card-body">
+    <div class="fase azul"><h4>Fase 1 — Planificación de zona</h4><ul><li>Bloques de 4-6 manzanas por sesión.</li><li>Meta: mínimo 15 visitas/día, óptimo 20+.</li></ul></div>
+    <div class="fase verde"><h4>Fase 2 — Documentación estructurada</h4><ul><li>Scorecard después de cada visita. Nunca acumules más de 3 sin registrar.</li><li>Al cierre del día completa campos faltantes.</li></ul></div>
+    <div class="fase naranja"><h4>Fase 3 — Análisis semanal (30-45 min)</h4><ul><li>¿Qué giros convierten mejor? Enfoca el esfuerzo ahí.</li><li>¿Cuántos contratos vencen en 90 días? Son los prospectos calientes.</li></ul></div>
+    <p style="font-size:12px;font-weight:600;color:#374151;margin:14px 0 8px">Métricas de salud operativa</p>
+    <table class="mtable"><thead><tr><th>Indicador</th><th>Mínimo</th><th>Óptimo</th><th>Alerta</th></tr></thead>
+    <tbody>
+      <tr><td>Visitas / día</td><td>15</td><td><span class="tv">20+</span></td><td><span class="tr2">&lt;10</span></td></tr>
+      <tr><td>Contacto efectivo</td><td>50%</td><td><span class="tv">65%+</span></td><td><span class="tr2">&lt;40%</span></td></tr>
+      <tr><td>Tomadores / contactos</td><td>30%</td><td><span class="tv">45%+</span></td><td><span class="tr2">&lt;20%</span></td></tr>
+      <tr><td>Oportunidades</td><td>10%</td><td><span class="tv">20%+</span></td><td><span class="tr2">&lt;5%</span></td></tr>
+      <tr><td>Seguimientos cumplidos</td><td>80%</td><td><span class="tv">95%+</span></td><td><span class="tr2">&lt;70%</span></td></tr>
+    </tbody></table>
   </div></div>
 </div>
-
 </div>
 <div class="toast" id="toast"></div>
-
 <script>
-const SHEETS_URL='https://script.google.com/macros/s/AKfycbyhicx0bJDJ5VJagFo2p7CV6k6Z0aWuMw9r3ZcHOo9zEOn0ThJTMGjEUQn9P8YF74Py/exec';
-let visitasSession=[],folioNum=1,starVals={interes:0,potencial:0},planSelected='';
-
-window.addEventListener('DOMContentLoaded',()=>{
-  const h=new Date();
-  document.getElementById('fecha-display').textContent=h.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'});
-  actualizarFolio();
-  document.querySelectorAll('.radio-group').forEach(rg=>{
-    rg.querySelectorAll('.radio-opt').forEach(opt=>{
-      ['click','touchend'].forEach(ev=>{
-        opt.addEventListener(ev,(e)=>{
-          if(ev==='touchend') e.preventDefault();
-          rg.querySelectorAll('.radio-opt').forEach(o=>o.classList.remove('selected'));
-          opt.classList.add('selected');
-        });
-      });
-    });
-  });
-  document.querySelectorAll('.check-opt').forEach(opt=>{
-    ['click','touchend'].forEach(ev=>{
-      opt.addEventListener(ev,(e)=>{
-        if(ev==='touchend') e.preventDefault();
-        const color=opt.dataset.color;
-        const cls='checked-'+(color==='green'?'green':color==='orange'?'orange':'blue');
-        const wasChecked=opt.classList.contains(cls);
-        opt.classList.remove('checked-blue','checked-green','checked-orange');
-        if(!wasChecked) opt.classList.add(cls);
-      });
-    });
-  });
-  pingSheets();
-});
-
-function pingSheets(){
-  fetch(SHEETS_URL+'?ping=1',{method:'GET',mode:'no-cors'})
-    .then(()=>setConn(true)).catch(()=>setConn(false));
-  setTimeout(pingSheets,30000);
-}
-function setConn(ok){
-  document.getElementById('conn-dot').style.background=ok?'#4ade80':'#f87171';
-  document.getElementById('conn-label').textContent=ok?'Conectado a Sheets':'Sin conexión';
-}
+var SHEETS='https://script.google.com/macros/s/AKfycbyhicx0bJDJ5VJagFo2p7CV6k6Z0aWuMw9r3ZcHOo9zEOn0ThJTMGjEUQn9P8YF74Py/exec';
+var visitas=[],folio=1,sv={i:0,p:0},planSel='';
+window.onload=function(){
+  var h=new Date();
+  document.getElementById('fecha').textContent=h.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'});
+  updFolio();ping();
+};
+function updFolio(){document.getElementById('folio').textContent='VIS-'+(folio<10?'00':folio<100?'0':'')+folio;}
 function showTab(id,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.getElementById('tab-'+id).classList.add('active');
-  if(btn) btn.classList.add('active');
-  if(id==='dashboard') renderDashboard();
+  if(btn)btn.classList.add('active');
+  if(id==='dash')renderDash();
 }
 function setStar(type,val){
-  starVals[type]=val;
-  document.querySelectorAll('#stars-'+type+' .star').forEach((s,i)=>s.classList.toggle('lit',i<val));
+  sv[type]=val;
+  var id=type==='i'?'si':'sp';
+  document.querySelectorAll('#'+id+' .star-btn').forEach(function(s,i){s.classList.toggle('lit',i<val);});
 }
-function selectPlan(p){
-  planSelected=p;
-  document.querySelectorAll('.plan-card').forEach(c=>c.classList.toggle('selected',c.querySelector('.plan-name').textContent===p));
+function selPlan(btn,name){
+  planSel=name;
+  document.querySelectorAll('.plan-btn').forEach(function(b){b.classList.remove('selected');});
+  btn.classList.add('selected');
 }
-function actualizarFolio(){
-  document.getElementById('folio-display').textContent='VIS-'+String(folioNum).padStart(3,'0');
-}
-function getChecked(id){
-  const v=[];
-  document.querySelectorAll('#'+id+' .check-opt.checked-green, #'+id+' .check-opt.checked-orange, #'+id+' .check-opt.checked-blue').forEach(o=>v.push(o.querySelector('input').value));
+function getChecked(name){
+  var v=[];
+  document.querySelectorAll('input[name="'+name+'"]:checked').forEach(function(c){v.push(c.value);});
   return v.join(', ');
 }
-function getRadio(name){
-  const s=document.querySelector('input[name="'+name+'"]:checked');
-  return s?s.value:'';
+function getRadio(name){var r=document.querySelector('input[name="'+name+'"]:checked');return r?r.value:'';}
+function guardar(){
+  var neg=document.getElementById('negocio').value.trim();
+  var zon=document.getElementById('zona').value.trim();
+  var prov=document.getElementById('proveedor').value;
+  if(!neg||!zon||!prov){toast('Completa los campos obligatorios (*)','err');return;}
+  var btn=document.getElementById('btnguardar');
+  btn.disabled=true;btn.textContent='Guardando...';
+  var f='VIS-'+(folio<10?'00':folio<100?'0':'')+folio;
+  var data={fecha:new Date().toLocaleDateString('es-MX'),folio:f,promotor:document.getElementById('promotor').value.trim()||'—',zona:zon,calle:document.getElementById('calle').value.trim(),negocio:neg,giro:document.getElementById('giro').value,empleados:document.getElementById('empleados').value,sucursales:getRadio('suc'),contacto:document.getElementById('contacto').value.trim()||'—',cargo:document.getElementById('cargo').value.trim(),telefono:document.getElementById('tel').value.trim(),email:document.getElementById('email').value.trim(),tomador:getRadio('tom'),proveedor:prov,plan:document.getElementById('plan').value.trim(),contrato:document.getElementById('contrato').value,satisfaccion:document.getElementById('satisfaccion').value,hallazgos:document.getElementById('hallazgos').value.trim(),necesidades:getChecked('nec'),objeciones:getChecked('obj'),interes:sv.i,potencial:sv.p,planRecomendado:planSel,accion:document.getElementById('accion').value,seguimiento:document.getElementById('seguimiento').value,observaciones:document.getElementById('obs').value.trim()};
+  fetch(SHEETS,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+  .then(function(){visitas.push(data);folio++;updFolio();document.getElementById('badge').textContent=visitas.length;renderLista();toast('Guardado en Google Sheets','ok');limpiar();})
+  .catch(function(){toast('Error de conexión','err');})
+  .finally(function(){btn.disabled=false;btn.textContent='💾 Guardar en Sheets';});
 }
-async function guardarVisita(){
-  const negocio=document.getElementById('f-negocio').value.trim();
-  const zona=document.getElementById('f-zona').value.trim();
-  const contacto=document.getElementById('f-contacto').value.trim();
-  const proveedor=document.getElementById('f-proveedor').value;
-  if(!negocio||!zona||!proveedor){showToast('⚠️ Completa los campos obligatorios (*)','error');return;}
-  const btn=document.getElementById('btn-guardar');
-  btn.disabled=true;btn.textContent='⏳ Guardando...';
-  const folio='VIS-'+String(folioNum).padStart(3,'0');
-  const hoy=new Date().toLocaleDateString('es-MX');
-  const data={fecha:hoy,folio,promotor:document.getElementById('f-promotor').value.trim()||'—',zona,calle:document.getElementById('f-calle').value.trim(),negocio,giro:document.getElementById('f-giro').value,empleados:document.getElementById('f-empleados').value,sucursales:getRadio('sucursales'),contacto:contacto||'—',cargo:document.getElementById('f-cargo').value.trim(),telefono:document.getElementById('f-tel').value.trim(),email:document.getElementById('f-email').value.trim(),tomador:getRadio('tomador'),proveedor,plan:document.getElementById('f-plan').value.trim(),contrato:document.getElementById('f-contrato').value,satisfaccion:document.getElementById('f-satisfaccion').value,hallazgos:document.getElementById('f-hallazgos').value.trim(),necesidades:getChecked('cg-necesidades'),objeciones:getChecked('cg-objeciones'),interes:starVals.interes,potencial:starVals.potencial,planRecomendado:planSelected,accion:document.getElementById('f-accion').value,seguimiento:document.getElementById('f-seguimiento').value,observaciones:document.getElementById('f-observaciones').value.trim()};
-  try{
-    await fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
-    visitasSession.push(data);folioNum++;actualizarFolio();
-    document.getElementById('badge-visitas').textContent=visitasSession.length;
-    renderListaVisitas();showToast('✅ Guardado en Google Sheets','success');limpiarForm();
-  }catch(e){showToast('❌ Error de conexión','error');}
-  finally{btn.disabled=false;btn.textContent='💾 Guardar en Sheets';}
+function limpiar(){
+  ['negocio','calle','giro','empleados','contacto','cargo','tel','email','proveedor','plan','contrato','satisfaccion','hallazgos','accion','seguimiento','obs'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
+  document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(function(r){r.checked=false;});
+  document.querySelectorAll('.plan-btn').forEach(function(b){b.classList.remove('selected');});
+  setStar('i',0);setStar('p',0);planSel='';
 }
-function limpiarForm(){
-  ['f-promotor','f-zona','f-calle','f-negocio','f-giro','f-empleados','f-contacto','f-cargo','f-tel','f-email','f-proveedor','f-plan','f-contrato','f-satisfaccion','f-hallazgos','f-accion','f-seguimiento','f-observaciones'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  document.querySelectorAll('.radio-opt').forEach(o=>o.classList.remove('selected'));
-  document.querySelectorAll('input[type=radio]').forEach(r=>r.checked=false);
-  document.querySelectorAll('.check-opt').forEach(o=>o.classList.remove('checked-blue','checked-green','checked-orange'));
-  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('selected'));
-  setStar('interes',0);setStar('potencial',0);planSelected='';
+function renderLista(){
+  var el=document.getElementById('lista');
+  if(!visitas.length){el.innerHTML='<div class="empty">Sin visitas guardadas aún.</div>';return;}
+  el.innerHTML=visitas.slice().reverse().map(function(v){var n=v.interes>=4?'alta':v.interes>=2?'media':'baja';var l=v.interes>=4?'Interés alto':v.interes>=2?'Interés medio':'Interés bajo';return'<div class="v-item"><div><div class="v-name">'+v.negocio+'</div><div class="v-meta">'+v.zona+' · '+v.proveedor+' · '+v.folio+'</div></div><span class="badge '+n+'">'+l+'</span></div>';}).join('');
 }
-function renderListaVisitas(){
-  const el=document.getElementById('lista-visitas');
-  if(!visitasSession.length){el.innerHTML='<div class="empty-state"><p>💡 Sin visitas guardadas aún.</p></div>';return;}
-  el.innerHTML=visitasSession.slice().reverse().map(v=>{
-    const n=v.interes>=4?'alta':v.interes>=2?'media':'baja';
-    const lbl=v.interes>=4?'Interés alto':v.interes>=2?'Interés medio':'Interés bajo';
-    return`<div class="visita-item"><div><div class="v-name">${v.negocio}</div><div class="v-meta">${v.zona} · ${v.proveedor} · ${v.folio}</div></div><span class="v-badge ${n}">${lbl}</span></div>`;
-  }).join('');
+function renderDash(){
+  document.getElementById('kv').textContent=visitas.length;
+  document.getElementById('kc').textContent=visitas.filter(function(v){return v.contacto&&v.contacto!=='—';}).length;
+  document.getElementById('kt').textContent=visitas.filter(function(v){return v.tomador==='Sí, tomador de decisión';}).length;
+  document.getElementById('ks').textContent=visitas.filter(function(v){return v.seguimiento;}).length;
+  renderBar('ccomp',countF('proveedor'),'#3b82f6');
+  renderBar('cnec',countM('necesidades'),'#16a34a');
+  renderBar('cobj',countM('objeciones'),'#c2410c');
 }
-function renderDashboard(){
-  const t=visitasSession.length;
-  const c=visitasSession.filter(v=>v.contacto&&v.contacto!=='—').length;
-  const td=visitasSession.filter(v=>v.tomador==='Sí, tomador de decisión').length;
-  const s=visitasSession.filter(v=>v.seguimiento).length;
-  document.getElementById('kpi-visitas').textContent=t;
-  document.getElementById('kpi-contactos').textContent=c;
-  document.getElementById('kpi-tomadores').textContent=td;
-  document.getElementById('kpi-seguimientos').textContent=s;
-  renderBar('chart-comp',countField('proveedor'),'#3b82f6');
-  renderBar('chart-nec',countMulti('necesidades'),'#16a34a');
-  renderBar('chart-obj',countMulti('objeciones'),'#c2410c');
-}
-function countField(f){const m={};visitasSession.forEach(v=>{if(v[f])m[v[f]]=(m[v[f]]||0)+1;});return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5);}
-function countMulti(f){const m={};visitasSession.forEach(v=>{if(v[f])v[f].split(', ').forEach(x=>{if(x.trim())m[x.trim()]=(m[x.trim()]||0)+1;});});return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5);}
-function renderBar(id,data,color){
-  const el=document.getElementById(id);
-  if(!data.length){el.innerHTML='<div class="empty-state" style="padding:16px"><p>Registra visitas para ver datos</p></div>';return;}
-  const mx=data[0][1];
-  el.innerHTML=data.map(([n,c])=>`<div class="bar-row-item"><div class="bar-name" title="${n}">${n}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/mx*100)}%;background:${color}"></div></div><div class="bar-n">${c}</div></div>`).join('');
-}
-function showToast(msg,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+(type||'');t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
+function countF(f){var m={};visitas.forEach(function(v){if(v[f])m[v[f]]=(m[v[f]]||0)+1;});return Object.entries(m).sort(function(a,b){return b[1]-a[1];}).slice(0,5);}
+function countM(f){var m={};visitas.forEach(function(v){if(v[f])v[f].split(', ').forEach(function(x){if(x.trim())m[x.trim()]=(m[x.trim()]||0)+1;});});return Object.entries(m).sort(function(a,b){return b[1]-a[1];}).slice(0,5);}
+function renderBar(id,data,color){var el=document.getElementById(id);if(!data.length){el.innerHTML='<div class="empty" style="padding:16px">Registra visitas para ver datos</div>';return;}var mx=data[0][1];el.innerHTML=data.map(function(d){return'<div class="bar-item"><div class="bar-name">'+d[0]+'</div><div class="bar-track"><div class="bar-fill" style="width:'+Math.round(d[1]/mx*100)+'%;background:'+color+'"></div></div><div class="bar-n">'+d[1]+'</div></div>';}).join('');}
+function ping(){fetch(SHEETS+'?ping=1',{method:'GET',mode:'no-cors'}).then(function(){setConn(true);}).catch(function(){setConn(false);});setTimeout(ping,30000);}
+function setConn(ok){document.getElementById('cdot').style.background=ok?'#4ade80':'#f87171';document.getElementById('clbl').textContent=ok?'Conectado a Sheets':'Sin conexión';}
+function toast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast '+(type||'');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
 </script>
 </body>
 </html>
